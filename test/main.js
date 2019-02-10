@@ -10,7 +10,7 @@ describe("Random releases", () => {
             resolution: "480p",
             season: 5,
             episode: 10,
-            source: "bluray",
+            source: "BluRay",
             codec: "x264",
             group: "GAnGSteR",
         });
@@ -23,7 +23,7 @@ describe("Random releases", () => {
             title: "Color Of Night",
             unrated: true,
             language: "vostfr",
-            source: "brrip",
+            source: "BRRip",
             codec: "x264",
         });
     });
@@ -33,7 +33,7 @@ describe("Random releases", () => {
 
         expect(parse(releaseName)).to.deep.equal({
             title: "Da Vinci Code",
-            source: "dvdrip",
+            source: "DVDRip",
         });
     });
 
@@ -42,7 +42,7 @@ describe("Random releases", () => {
 
         expect(parse(releaseName)).to.deep.equal({
             title: "Some girls",
-            source: "dvdrip",
+            source: "DVDRip",
             year: 1998,
         });
     });
@@ -52,7 +52,7 @@ describe("Random releases", () => {
 
         expect(parse(releaseName)).to.deep.equal({
             title: "Ecrit Dans Le Ciel",
-            source: "dvdrip",
+            source: "DVDRip",
             year: 1954,
             language: "multi",
             codec: "x264",
@@ -66,7 +66,7 @@ describe("Random releases", () => {
 
         expect(parse(releaseName)).to.deep.equal({
             title: "2019 After The Fall Of New York",
-            source: "bdrip",
+            source: "BDRip",
             remastered: true,
             year: 1983,
             codec: "x264",
@@ -79,7 +79,7 @@ describe("Random releases", () => {
 
         expect(parse(releaseName)).to.deep.equal({
             title: "Ghost In The Shell",
-            source: "hdrip",
+            source: "HDRip",
             hardcoded: true,
             year: 2017,
             resolution: "720p",
@@ -94,7 +94,7 @@ describe("Random releases", () => {
 
         expect(parse(releaseName)).to.deep.equal({
             title: "Rogue One",
-            source: "bluray",
+            source: "BluRay",
             year: 2016,
             resolution: "1080p",
             codec: "x264",
@@ -107,7 +107,7 @@ describe("Random releases", () => {
 
         expect(parse(releaseName)).to.deep.equal({
             title: "Desperation",
-            source: "dvd",
+            source: "DVD",
             year: 2006,
             language: "multi",
             region: "R9",
@@ -120,7 +120,7 @@ describe("Random releases", () => {
 
         expect(parse(releaseName)).to.deep.equal({
             title: "Maman, j'ai raté l'avion",
-            source: "bluray",
+            source: "BluRay",
             year: 1990,
             audio: "dts",
             resolution: "1080p",

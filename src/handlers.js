@@ -38,25 +38,25 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("container", /\b(MKV|AVI|MP4)\b/i, { type: "lowercase" });
 
     // Source
-    parser.addHandler("source", /\b(?:HD-?)?CAM\b/, { type: "lowercase" });
-    parser.addHandler("source", /\b(?:HD-?)?T(?:ELE)?S(?:YNC)?\b/i, { value: "telesync" });
-    parser.addHandler("source", /\bHD-?Rip\b/i, { type: "lowercase" });
-    parser.addHandler("source", /\bBRRip\b/i, { type: "lowercase" });
-    parser.addHandler("source", /\bBDRip\b/i, { type: "lowercase" });
-    parser.addHandler("source", /\bDVDRip\b/i, { type: "lowercase" });
-    parser.addHandler("source", /\bDVD(?:R[0-9])?\b/i, { value: "dvd" });
-    parser.addHandler("source", /\bDVDscr\b/i, { type: "lowercase" });
-    parser.addHandler("source", /\b(?:HD-?)?TVRip\b/i, { type: "lowercase" });
-    parser.addHandler("source", /\bTC\b/, { type: "lowercase" });
-    parser.addHandler("source", /\bPPVRip\b/i, { type: "lowercase" });
-    parser.addHandler("source", /\bR5\b/i, { type: "lowercase" });
-    parser.addHandler("source", /\bVHSSCR\b/i, { type: "lowercase" });
-    parser.addHandler("source", /\bBluray\b/i, { type: "lowercase" });
-    parser.addHandler("source", /\bWEB-?DL\b/i, { type: "lowercase" });
-    parser.addHandler("source", /\bWEB-?Rip\b/i, { type: "lowercase" });
-    parser.addHandler("source", /\b(?:DL|WEB|BD|BR)MUX\b/i, { type: "lowercase" });
-    parser.addHandler("source", /\b(DivX|XviD)\b/, { type: "lowercase" });
-    parser.addHandler("source", /HDTV/i, { type: "lowercase" });
+    parser.addHandler("source", /\b(?:HD-?)?CAM\b/);
+    parser.addHandler("source", /\b(?:HD-?)?T(?:ELE)?S(?:YNC)?\b/i);
+    parser.addHandler("source", /\bHD-?Rip\b/i);
+    parser.addHandler("source", /\bBRRip\b/i, { value: "BRRip" });
+    parser.addHandler("source", /\bBDRip\b/i, { value: "BDRip" });
+    parser.addHandler("source", /\bDVDRip\b/i, { value: "DVDRip" });
+    parser.addHandler("source", /\bDVD(?:R[0-9])?\b/i, { value: "DVD" });
+    parser.addHandler("source", /\bDVD?Scr\b/i, { value: "DVDScr" });
+    parser.addHandler("source", /\b(?:HD-?)?TVRip\b/i);
+    parser.addHandler("source", /\bTC\b/, { value: "TC" });
+    parser.addHandler("source", /\bPPVRip\b/i, { value: "PPVRip" });
+    parser.addHandler("source", /\bR5\b/i, { value: "R5" });
+    parser.addHandler("source", /\bVHSScr\b/i, { value: "VHSScr" });
+    parser.addHandler("source", /\bBluRay\b/i, { value: "BluRay" });
+    parser.addHandler("source", /\bWEB-?DL\b/i, { value: "WEB-DL" });
+    parser.addHandler("source", /\bWEB-?Rip\b/i, { value: "WEBRip" });
+    parser.addHandler("source", /\b(?:DL|WEB|BD|BR)MUX\b/i);
+    parser.addHandler("source", /\b(DivX|XviD)\b/);
+    parser.addHandler("source", /\bHDTV\b/i, { value: "HDTV" });
 
     // Codec
     parser.addHandler("codec", /dvix|mpeg2|divx|xvid|[xh][-. ]?26[45]|avc|hevc/i, { type: "lowercase" });
