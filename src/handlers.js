@@ -35,7 +35,7 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("region", /R[0-9]/);
 
     // Container
-    parser.addHandler("container", /\b(MKV|AVI|MP4)\b/i, { type: "lowercase" });
+    parser.addHandler("container", /\b(MKV|AVI|MP4|WMV|MPG|MPEG)\b/i, { type: "lowercase" });
 
     // Source
     parser.addHandler("source", /\b(?:HD-?)?CAM\b/);
@@ -77,14 +77,18 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("group", /- ?([^\-. ]+)$/);
 
     // Season
-    parser.addHandler("season", /S([0-9]{1,2}) ?E[0-9]{1,2}/i, { type: "integer" });
-    parser.addHandler("season", /([0-9]{1,2})x[0-9]{1,2}/, { type: "integer" });
-    parser.addHandler("season", /(?:Saison|Season)[. _-]?([0-9]{1,2})/i, { type: "integer" });
+    parser.addHandler("season", /((?:s\d{1,2}[., +/\\&-]+)+s\d{1,2}\b)/i, { type: "range" });
+    parser.addHandler("season", /(?:\bcomplete\W)?\bseasons?\b[. -]?[([]?((?:\d{1,2}[., /\\&-]+)+\d{1,2}\b)[)\]]?/i, { type: "range" });
+    parser.addHandler("season", /(?:\bcomplete\W)?\bseasons?\b[. -]?(\d{1,2}[. -]?(?:to|thru|and|\+|:)[. -]?\d{1,2})\b/i, { type: "range" });
+    parser.addHandler("season", /(?:\bcomplete\W)?(?:saison|season)[. -]?(\d{1,2})/i, { type: "integer" });
+    parser.addHandler("season", /(?:\bcomplete\W)?s(\d{1,2})(?:[\Wex]|$)/i, { type: "integer", skipIfAlreadyFound: false });
+    parser.addHandler("season", /(\d{1,2})x\d{1,2}/, { type: "integer" });
+    parser.addHandler("season", /[[(](\d{1,2})\.\d{1,2}[)\]]/, { type: "integer" });
 
     // Episode
-    parser.addHandler("episode", /S[0-9]{1,2} ?E([0-9]{1,2})/i, { type: "integer" });
+    parser.addHandler("episode", /s[0-9]{1,2}[. -]?e[. ]?([0-9]{1,2})/i, { type: "integer" });
     parser.addHandler("episode", /[0-9]{1,2}x([0-9]{1,2})/, { type: "integer" });
-    parser.addHandler("episode", /[ée]p(?:isode)?[. _-]?([0-9]{1,3})/i, { type: "integer" });
+    parser.addHandler("episode", /[ée]p(?:isode)?[. -]?([0-9]{1,3})/i, { type: "integer" });
 
     // Language
     parser.addHandler("language", /\bRUS\b/i, { type: "lowercase" });

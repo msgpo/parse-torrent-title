@@ -6,7 +6,9 @@ function extendOptions(options) {
         type: "string",
     };
 
-    options.skipIfAlreadyFound = options.skipIfAlreadyFound || defaultOptions.skipIfAlreadyFound;
+    if (typeof options.skipIfAlreadyFound === "undefined") {
+        options.skipIfAlreadyFound = defaultOptions.skipIfAlreadyFound;
+    }
     options.type = options.type || defaultOptions.type;
 
     return options;
@@ -23,6 +25,21 @@ function createHandlerFromRegExp(name, regExp, options) {
         transformer = () => true;
     } else if (options.type.toLowerCase().slice(0, 3) === "int") {
         transformer = input => parseInt(input, 10);
+    } else if (options.type.toLowerCase() === "range") {
+        transformer = input => {
+            let range = input
+                .replace(/\D+/g, " ")
+                .trim()
+                .split(" ")
+                .map(str => parseInt(str, 10));
+            if (range.length === 2) {
+                range = Array(range[1] - range[0] + 1).fill().map((_, idx) => range[0] + idx);
+            }
+            if (!range.every((value, idx) => idx === range.length - 1 || value + 1 === range[idx + 1])) {
+                return null; // array is not in sequence and ascending order
+            }
+            return range;
+        };
     } else {
         transformer = input => input;
     }
@@ -36,7 +53,7 @@ function createHandlerFromRegExp(name, regExp, options) {
         const [rawMatch, cleanMatch] = match || [];
 
         if (rawMatch) {
-            result[name] = options.value || transformer(cleanMatch || rawMatch);
+            result[name] = result[name] || options.value || transformer(cleanMatch || rawMatch);
             return match.index;
         }
 
@@ -96,6 +113,7 @@ class Parser {
     }
 
     parse(title) {
+        title = title.replace(/_+/g, " ");
         const result = {};
         let endOfTitle = title.length;
 
