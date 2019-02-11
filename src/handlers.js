@@ -94,12 +94,19 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("episode", /[[(]\d{1,2}\.(\d{1,2})[)\]]/, { type: "integer" });
 
     // can be both absolute episode and season+episode in format 101
-    parser.addHandler("episode", ({ title, result }) => {
+    parser.addHandler("episode", ({ title, result, matched }) => {
         if (!result.season && !result.episode) {
-            const match = title.match(/(?:[ .([-]|^)(\d{1,3})[ab]?(?:[ .(\]-]|$)/g);
-            console.log(match);
+            const indexes = [matched.resolution, matched.source, matched.codec, matched.audio]
+                .filter(component => component)
+                .map(component => title.indexOf(component))
+                .filter(index => index > 0);
+            const endIndex = Math.min(...indexes, title.length);
+            const match = title.substring(0, endIndex).match(/(?:[ .([-]|^)(\d{1,3})[ab]?(?:[ .(\]-]|$)/g);
             if (match) {
-                result.episode = parseInt(match[match.length - 1].replace(/\D/g, ""), 10);
+                result.episode = (match.length > 1 ? match.splice(1, match.length) : match)
+                    .map(group => group.replace(/\D/g, ""))
+                    .map(group => parseInt(group, 10));
+                result.episode = result.episode.length === 1 ? result.episode[0] : result.episode;
             }
         }
     });

@@ -21,9 +21,9 @@ function createHandlerFromRegExp(name, regExp, options) {
         transformer = input => input;
     } else if (options.type.toLowerCase() === "lowercase") {
         transformer = input => input.toLowerCase();
-    } else if (options.type.toLowerCase().slice(0, 4) === "bool") {
+    } else if (options.type.toLowerCase().substr(0, 4) === "bool") {
         transformer = () => true;
-    } else if (options.type.toLowerCase().slice(0, 3) === "int") {
+    } else if (options.type.toLowerCase().substr(0, 3) === "int") {
         transformer = input => parseInt(input, 10);
     } else if (options.type.toLowerCase() === "range") {
         transformer = input => {
@@ -44,7 +44,7 @@ function createHandlerFromRegExp(name, regExp, options) {
         transformer = input => input;
     }
 
-    function handler({ title, result }) {
+    function handler({ title, result, matched }) {
         if (result[name] && options.skipIfAlreadyFound) {
             return null;
         }
@@ -54,6 +54,7 @@ function createHandlerFromRegExp(name, regExp, options) {
 
         if (rawMatch) {
             const transformed = transformer(cleanMatch || rawMatch);
+            matched[name] = matched[name] || rawMatch;
             result[name] = result[name] || options.value || transformed;
             return transformed && match.index;
         }
@@ -116,17 +117,17 @@ class Parser {
     parse(title) {
         title = title.replace(/_+/g, " ");
         const result = {};
+        const matched = {};
         let endOfTitle = title.length;
 
         for (const handler of this.handlers) {
-            const matchIndex = handler({ title, result });
-
+            const matchIndex = handler({ title, result, matched });
             if (matchIndex && matchIndex < endOfTitle) {
                 endOfTitle = matchIndex;
             }
         }
 
-        result.title = cleanTitle(title.slice(0, endOfTitle));
+        result.title = cleanTitle(title.substr(0, endOfTitle));
 
         return result;
     }

@@ -31,7 +31,7 @@ declare namespace ParseTorrentTitle {
     }
 
     interface Handler {
-        (input: { title: string, result: ParserResult }): void;
+        (input: { title: string, result: ParserResult, matched: Array<string> }): void;
         (input: { title: string }): void;
         (input: { result: ParserResult }): void;
     }
