@@ -69,7 +69,7 @@ exports.addDefaults = /** @type Parser */ parser => {
     // Audio
     parser.addHandler("audio", /MD|MP3|mp3|FLAC|Atmos|DTS(?:-HD)?|TrueHD/, { type: "lowercase" });
     parser.addHandler("audio", /Dual[- ]Audio/i, { type: "lowercase" });
-    parser.addHandler("audio", /AC-?3(?:\.5\.1)?/i, { value: "ac3" });
+    parser.addHandler("audio", /AC-?3(?:[.-]5\.1)?/i, { value: "ac3" });
     parser.addHandler("audio", /DD5[. ]?1/i, { value: "dd5.1" });
     parser.addHandler("audio", /AAC(?:[. ]?2[. ]0)?/, { value: "aac" });
 
@@ -86,9 +86,22 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("season", /[[(](\d{1,2})\.\d{1,2}[)\]]/, { type: "integer" });
 
     // Episode
-    parser.addHandler("episode", /s[0-9]{1,2}[. -]?e[. ]?([0-9]{1,2})/i, { type: "integer" });
-    parser.addHandler("episode", /[0-9]{1,2}x([0-9]{1,2})/, { type: "integer" });
-    parser.addHandler("episode", /[ée]p(?:isode)?[. -]?([0-9]{1,3})/i, { type: "integer" });
+    parser.addHandler("episode", /(?:[\W\d]|^)[ex]p?(?:isode)?s?[ .]?[([]?(\d{1,3}(?:[ .-]*[ex&-]p?[ .]?\d{1,3})+)(?:\D|$)/i, { type: "range" });
+    parser.addHandler("episode", /(?:[s .([-]|^)\d{1,2}[. -]*[ex]p?[. ]?(\d{1,2})(?:\D|$)/i, { type: "integer" });
+    parser.addHandler("episode", /(?:[ .([-]|^)(\d{1,3}(?:[ .]?[,&-][ .]?\d{1,3})+)(?:[ .)\]-]|$)/i, { type: "range" });
+    parser.addHandler("episode", /[ée]p(?:isode)?[. -]?(\d{1,3})(?:\D|$)/i, { type: "integer" });
+    parser.addHandler("episode", /[[(]\d{1,2}\.(\d{1,2})[)\]]/, { type: "integer" });
+
+    // can be both absolute episode and season+episode in format 101
+    parser.addHandler("episode", ({ title, result }) => {
+        if (!result.season && !result.episode) {
+            const match = title.match(/(?:[ .([-]|^)(\d{1,3})[ab]?(?:[ .(\]-]|$)/g);
+            console.log(match);
+            if (match) {
+                result.episode = parseInt(match[match.length - 1].replace(/\D/g, ""), 10);
+            }
+        }
+    });
 
     // Language
     parser.addHandler("language", /\bRUS\b/i, { type: "lowercase" });

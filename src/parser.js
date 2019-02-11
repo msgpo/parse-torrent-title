@@ -32,7 +32,7 @@ function createHandlerFromRegExp(name, regExp, options) {
                 .trim()
                 .split(" ")
                 .map(str => parseInt(str, 10));
-            if (range.length === 2) {
+            if (range.length === 2 && range[0] < range[1]) {
                 range = Array(range[1] - range[0] + 1).fill().map((_, idx) => range[0] + idx);
             }
             if (!range.every((value, idx) => idx === range.length - 1 || value + 1 === range[idx + 1])) {
@@ -53,8 +53,9 @@ function createHandlerFromRegExp(name, regExp, options) {
         const [rawMatch, cleanMatch] = match || [];
 
         if (rawMatch) {
-            result[name] = result[name] || options.value || transformer(cleanMatch || rawMatch);
-            return match.index;
+            const transformed = transformer(cleanMatch || rawMatch);
+            result[name] = result[name] || options.value || transformed;
+            return transformed && match.index;
         }
 
         return null;
