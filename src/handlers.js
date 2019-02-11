@@ -49,6 +49,7 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("source", /\b(?:HD-?)?TVRip\b/i);
     parser.addHandler("source", /\bTC\b/, { value: "TC" });
     parser.addHandler("source", /\bPPVRip\b/i, { value: "PPVRip" });
+    parser.addHandler("source", /\bTVRips?\b/i, { value: "TVRip" });
     parser.addHandler("source", /\bR5\b/i, { value: "R5" });
     parser.addHandler("source", /\bVHSScr\b/i, { value: "VHSScr" });
     parser.addHandler("source", /\bBluRay\b/i, { value: "BluRay" });
@@ -102,6 +103,12 @@ exports.addDefaults = /** @type Parser */ parser => {
             }
         }
     });
+
+    parser.addHandler("complete", /\b(?:complete|collection|dvd)?\b[ .]?\bbox[ .-]?set\b/i, { type: "boolean" });
+    parser.addHandler("complete", /\b(?:complete|collection|dvd)?\b[ .]?\bmini[ .-]?series\b/i, { type: "boolean" });
+    parser.addHandler("complete", /\b(?:complete|full|all)\b.*\b(?:series|seasons|collection)\b/i, { type: "boolean" });
+    parser.addHandler("complete", /\bseries\b[ .]\b(?:complete|collection)\b/i, { type: "boolean" });
+    parser.addHandler("complete", /\bseasons\b[ .]\b(?:complete|collection)\b/i, { type: "boolean" });
 
     // Language
     parser.addHandler("language", /\bRUS\b/i, { type: "lowercase" });

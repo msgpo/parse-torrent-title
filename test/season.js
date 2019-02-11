@@ -122,10 +122,5 @@ describe("Parsing season", () => {
         const releaseName = "24 Season 1-8 Complete with Subtitles";
         expect(parse(releaseName)).to.deep.include({ season: [1, 2, 3, 4, 5, 6, 7, 8] });
     });
-
-    it("should detect complete series with season count in between", () => {
-        const releaseName = "[Furi] Avatar - The Last Airbender [720p] (Full 3 Seasons + Extr";
-        expect(parse(releaseName)).to.deep.include({ season: [1, 2, 3] });
-    });
 });
 

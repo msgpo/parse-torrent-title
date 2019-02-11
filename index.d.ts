@@ -18,6 +18,7 @@ declare namespace ParseTorrentTitle {
         hardcoded?: boolean;
         retail?: boolean;
         remastered?: boolean;
+        complete?: boolean;
         region?: string;
         container?: string;
         source?: string;
