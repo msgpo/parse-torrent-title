@@ -172,4 +172,16 @@ describe("Random releases", () => {
             group: "HETeam"
         });
     });
+
+    it("You.[Uncut].S01.SweSub.1080p.x264-Justiso", () => {
+        const releaseName = "You.[Uncut].S01.SweSub.1080p.x264-Justiso";
+        expect(parse(releaseName)).to.deep.equal({
+            title: "You",
+            seasons: [1],
+            season: 1,
+            resolution: "1080p",
+            codec: "x264",
+            group: "Justiso",
+        });
+    });
 });
