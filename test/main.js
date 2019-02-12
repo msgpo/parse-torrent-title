@@ -131,4 +131,45 @@ describe("Random releases", () => {
             group: "HTG",
         });
     });
+
+    it("Game of Thrones - The Complete Season 3 [HDTV]", () => {
+        const releaseName = "Game of Thrones - The Complete Season 3 [HDTV]";
+        expect(parse(releaseName)).to.deep.equal({
+            title: "Game of Thrones",
+            seasons: [3],
+            season: 3,
+            source: "HDTV"
+        });
+    });
+
+    it("The Sopranos: The Complete Series (Season 1,2,3,4,5&6) + Extras", () => {
+        const releaseName = "The Sopranos: The Complete Series (Season 1,2,3,4,5&6) + Extras";
+        expect(parse(releaseName)).to.deep.equal({
+            title: "The Sopranos",
+            seasons: [1, 2, 3, 4, 5, 6],
+            complete: true
+        });
+    });
+
+    it("Skins Season S01-S07 COMPLETE UK Soundtrack 720p WEB-DL", () => {
+        const releaseName = "Skins Season S01-S07 COMPLETE UK Soundtrack 720p WEB-DL";
+        expect(parse(releaseName)).to.deep.equal({
+            seasons: [1, 2, 3, 4, 5, 6, 7],
+            title: "Skins",
+            resolution: "720p",
+            source: "WEB-DL"
+        });
+    });
+
+    it("Futurama.COMPLETE.S01-S07.720p.BluRay.x265-HETeam", () => {
+        const releaseName = "Futurama.COMPLETE.S01-S07.720p.BluRay.x265-HETeam";
+        expect(parse(releaseName)).to.deep.equal({
+            title: "Futurama",
+            seasons: [1, 2, 3, 4, 5, 6, 7],
+            resolution: "720p",
+            source: "BluRay",
+            codec: "x265",
+            group: "HETeam"
+        });
+    });
 });

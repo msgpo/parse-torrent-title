@@ -21,5 +21,10 @@ describe("Parsing complete collection", () => {
         const releaseName = "Avatar: The Last Airbender Full Series 720p";
         expect(parse(releaseName)).to.deep.include({ complete: true });
     });
+
+    it("should detect complete collection with ultimate collection", () => {
+        const releaseName = "Dora the Explorer - Ultimate Collection";
+        expect(parse(releaseName)).to.deep.include({ complete: true });
+    });
 });
 

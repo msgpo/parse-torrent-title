@@ -27,6 +27,11 @@ describe("Parsing season", () => {
         expect(parse(releaseName)).to.deep.include({ season: 5 });
     });
 
+    it("should detect season with parenthesis prefix and x separator", () => {
+        const releaseName = "Smallville (1x02 Metamorphosis).avi";
+        expect(parse(releaseName)).to.deep.include({ season: 1 });
+    });
+
     it("should detect multiple seasons separated with comma", () => {
         const releaseName = "Game Of Thrones Complete Season 1,2,3,4,5,6,7 406p mkv + Subs";
         expect(parse(releaseName)).to.deep.include({ seasons: [1, 2, 3, 4, 5, 6, 7] });
@@ -42,8 +47,13 @@ describe("Parsing season", () => {
         expect(parse(releaseName)).to.deep.include({ seasons: [1, 2, 3, 4, 5] });
     });
 
-    it("should detect multiple season separated with comma. space and and symbol at the end", () => {
+    it("should detect multiple season separated with comma, space and symbol at the end", () => {
         const releaseName = "True Blood Season 1, 2, 3, 4, 5 & 6 + Extras BDRip TSV";
+        expect(parse(releaseName)).to.deep.include({ seasons: [1, 2, 3, 4, 5, 6] });
+    });
+
+    it("How I Met Your Mother Season 1, 2, 3, 4, 5, & 6 + Extras DVDRip", () => {
+        const releaseName = "How I Met Your Mother Season 1, 2, 3, 4, 5, & 6 + Extras DVDRip";
         expect(parse(releaseName)).to.deep.include({ seasons: [1, 2, 3, 4, 5, 6] });
     });
 
@@ -77,6 +87,16 @@ describe("Parsing season", () => {
         expect(parse(releaseName)).to.deep.include({ seasons: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] });
     });
 
+    it("should detect multiple seasons with s prefix separated with slash", () => {
+        const releaseName = "Stargate Atlantis ALL Seasons - S01 / S02 / S03 / S04 / S05";
+        expect(parse(releaseName)).to.deep.include({ seasons: [1, 2, 3, 4, 5] });
+    });
+
+    it("should detect multiple seasons with season and parenthesis prefix", () => {
+        const releaseName = "Stargate Atlantis Complete (Season 1 2 3 4 5) 720p HEVC x265";
+        expect(parse(releaseName)).to.deep.include({ seasons: [1, 2, 3, 4, 5] });
+    });
+
     it("should detect multiple seasons with s prefix separated with hyphen", () => {
         const releaseName = "Skam.S01-S02-S03.SweSub.720p.WEB-DL.H264";
         expect(parse(releaseName)).to.deep.include({ seasons: [1, 2, 3] });
@@ -96,7 +116,6 @@ describe("Parsing season", () => {
         const releaseName = "House MD All Seasons (1-8) 720p Ultra-Compressed";
         expect(parse(releaseName)).to.deep.include({ seasons: [1, 2, 3, 4, 5, 6, 7, 8] });
     });
-
 
     it("should detect multiple season when given implied range with season prefix", () => {
         const releaseName = "Teen Titans Season 1-5";
@@ -121,6 +140,36 @@ describe("Parsing season", () => {
     it("should detect multiple season when title is with numbers", () => {
         const releaseName = "24 Season 1-8 Complete with Subtitles";
         expect(parse(releaseName)).to.deep.include({ seasons: [1, 2, 3, 4, 5, 6, 7, 8] });
+    });
+
+    it("should detect single season when contains non related number range", () => {
+        const releaseName = "One Punch Man 01 - 12 Season 1 Complete [720p] [Eng Subs] [Xerxe:16";
+        expect(parse(releaseName)).to.deep.include({ season: 1 });
+    });
+
+    it("should detect season withing brackets with dot separator", () => {
+        const releaseName = "[5.01] Weight Loss.avi";
+        expect(parse(releaseName)).to.deep.include({ season: 5 });
+    });
+
+    it("should detect season with s prefix and single digit", () => {
+        const releaseName = "Bron - S4 - 720P - SweSub.mp4";
+        expect(parse(releaseName)).to.deep.include({ season: 4 });
+    });
+
+    it("Mad Men S02 Season 2 720p 5.1Ch BluRay ReEnc-DeeJayAhmed", () => {
+        const releaseName = "Mad Men S02 Season 2 720p 5.1Ch BluRay ReEnc-DeeJayAhmed";
+        expect(parse(releaseName)).to.deep.include({ season: 2 });
+    });
+
+    it("Friends S04 Season 4 1080p 5.1Ch BluRay ReEnc-DeeJayAhmed", () => {
+        const releaseName = "Friends S04 Season 4 1080p 5.1Ch BluRay ReEnc-DeeJayAhmed";
+        expect(parse(releaseName)).to.deep.include({ season: 4 });
+    });
+
+    it("should detect multiple season with double seperators", () => {
+        const releaseName = "Doctor Who S01--S07--Complete with holiday episodes";
+        expect(parse(releaseName)).to.deep.include({ seasons: [1, 2, 3, 4, 5, 6, 7] });
     });
 });
 

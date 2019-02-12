@@ -32,6 +32,11 @@ describe("Parsing episode", () => {
         expect(parse(releaseName)).to.deep.include({ episode: 14 });
     });
 
+    it("should detect episode with parenthesis prefix and x separator", () => {
+        const releaseName = "Smallville (1x02 Metamorphosis).avi";
+        expect(parse(releaseName)).to.deep.include({ episode: 2 });
+    });
+
     it("should detect episode when similar digits included", () => {
         const releaseName = "Friends.S07E20.The.One.With.Rachel's.Big.Kiss.720p.BluRay.2CH.x265.HEVC-PSA.mkv";
         expect(parse(releaseName)).to.deep.include({ season: 7, episode: 20 });
@@ -125,6 +130,77 @@ describe("Parsing episode", () => {
     it("should detect absolute episode with a divided episode into b part", () => {
         const releaseName = "The Amazing World of Gumball - 107b - The Mystery (720p.x264.ac3-5.1) [449].mkv";
         expect(parse(releaseName)).to.deep.include({ episode: 107 });
+    });
+
+    it("should detect episode withing brackets with dot separator", () => {
+        const releaseName = "[5.01] Weight Loss.avi";
+        expect(parse(releaseName)).to.deep.include({ episode: 1 });
+    });
+
+    it("should detect episode with spaces and hyphen separator", () => {
+        const releaseName = "S01 - E03 - Fifty-Fifty.mkv";
+        expect(parse(releaseName)).to.deep.include({ episode: 3 });
+    });
+
+    it("should detect multiple episodes separated with plus", () => {
+        const releaseName = "The Office S07E25+E26 Search Committee.mp4";
+        expect(parse(releaseName)).to.deep.include({ episodes: [25, 26] });
+    });
+
+    it("[animeawake] Naruto Shippuden - 124 - Art_2.mkv", () => {
+        const releaseName = "[animeawake] Naruto Shippuden - 124 - Art_2.mkv";
+        expect(parse(releaseName)).to.deep.include({ episode: 124 });
+    });
+
+    it("[animeawake] Naruto Shippuden - 072 - The Quietly Approaching Threat_2.mkv", () => {
+        const releaseName = "[animeawake] Naruto Shippuden - 072 - The Quietly Approaching Threat_2.mkv";
+        expect(parse(releaseName)).to.deep.include({ episode: 72 });
+    });
+
+    it("[animeawake] Naruto Shippuden - 120 - Kakashi Chronicles. Boys' Life on the Battlefield. Part 2.mkv", () => {
+        const releaseName = "[animeawake] Naruto Shippuden - 120 - Kakashi Chronicles. Boys' Life on the Battlefield. Part 2.mkv";
+        expect(parse(releaseName)).to.deep.include({ episode: 120 });
+    });
+
+    it("should detect single episode even when a possible range identifier hyphen is present", () => {
+        const releaseName = "Supernatural - S03E01 - 720p BluRay x264-Belex - Dual Audio + Legenda.mkv";
+        expect(parse(releaseName)).to.deep.include({ episode: 1 });
+    });
+
+    it("should detect detect episodes when the range is for season", () => {
+        const releaseName = "[F-D] Fairy Tail Season 1 -6 + Extras [480P][Dual-Audio]";
+        expect(parse(releaseName)).to.not.have.property("episodes");
+    });
+
+    it("should detect detect episodes when the range is for seasons", () => {
+        const releaseName = "House MD All Seasons (1-8) 720p Ultra-Compressed";
+        expect(parse(releaseName)).to.not.have.property("episodes");
+    });
+
+    it("should detect detect episode with x separator and e prefix", () => {
+        const releaseName = "24 - S01xE03.mp4";
+        expect(parse(releaseName)).to.deep.include({ season: 1, episode: 3 });
+    });
+
+    it("should detect detect episode correctly and not episode range ", () => {
+        const releaseName = "24 - S01E04 - x264 - dilpill.mkv";
+        expect(parse(releaseName)).to.deep.include({ episode: 4 });
+    });
+
+    it("should detect detect episode correctly and not episode range with two codecs", () => {
+        const releaseName = "24.Legacy.S01E05.720p.HEVC.x265-MeGusta";
+        expect(parse(releaseName)).to.deep.include({ episode: 5 });
+    });
+
+    it("should detect detect absolute episode with a version", () => {
+        const releaseName = "[F-D] Fairy.Tail.-.004v2.-. [480P][Dual-Audio].mkv";
+        expect(parse(releaseName)).to.deep.include({ episode: 4 });
+    });
+
+    it("should detect detect absolute episode and not detect any season modifier", () => {
+        const releaseName = "[a-s]_fairy_tail_-_003_-_infiltrate_the_everlue_mansion__rs2_[1080p_bd-rip][4CB16872].mkv";
+        expect(parse(releaseName)).to.deep.include({ episode: 3 });
+        expect(parse(releaseName)).to.not.have.property("seasons");
     });
 });
 
