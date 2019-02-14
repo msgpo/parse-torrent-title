@@ -1,49 +1,18 @@
+const { none } = require("./transformers");
+
 function extendOptions(options) {
     options = options || {};
 
-    const defaultOptions = {
-        skipIfAlreadyFound: true,
-        type: "string",
-    };
+    const defaultOptions = { skipIfAlreadyFound: true };
 
     if (typeof options.skipIfAlreadyFound === "undefined") {
         options.skipIfAlreadyFound = defaultOptions.skipIfAlreadyFound;
     }
-    options.type = options.type || defaultOptions.type;
 
     return options;
 }
 
-function createHandlerFromRegExp(name, regExp, options) {
-    let transformer;
-
-    if (!options.type) {
-        transformer = input => input;
-    } else if (options.type.toLowerCase() === "lowercase") {
-        transformer = input => input.toLowerCase();
-    } else if (options.type.toLowerCase().substr(0, 4) === "bool") {
-        transformer = () => true;
-    } else if (options.type.toLowerCase().substr(0, 3) === "int") {
-        transformer = input => parseInt(input, 10);
-    } else if (options.type.toLowerCase() === "range") {
-        transformer = input => {
-            let range = input
-                .replace(/\D+/g, " ")
-                .trim()
-                .split(" ")
-                .map(str => parseInt(str, 10));
-            if (range.length === 2 && range[0] < range[1]) {
-                range = Array(range[1] - range[0] + 1).fill().map((_, idx) => range[0] + idx);
-            }
-            if (!range.every((value, idx) => idx === range.length - 1 || value + 1 === range[idx + 1])) {
-                return null; // array is not in sequence and ascending order
-            }
-            return range;
-        };
-    } else {
-        transformer = input => input;
-    }
-
+function createHandlerFromRegExp(name, regExp, transformer, options) {
     function handler({ title, result, matched }) {
         if (result[name] && options.skipIfAlreadyFound) {
             return null;
@@ -86,7 +55,7 @@ class Parser {
         this.handlers = [];
     }
 
-    addHandler(handlerName, handler, options) {
+    addHandler(handlerName, handler, transformer, options) {
         if (typeof handler === "undefined" && typeof handlerName === "function") {
 
             // If no name is provided and a function handler is directly given
@@ -96,8 +65,9 @@ class Parser {
         } else if (typeof handlerName === "string" && handler instanceof RegExp) {
 
             // If the handler provided is a regular expression
-            options = extendOptions(options);
-            handler = createHandlerFromRegExp(handlerName, handler, options);
+            transformer = typeof transformer === "function" ? transformer : none;
+            options = extendOptions(typeof transformer === "object" ? transformer : options);
+            handler = createHandlerFromRegExp(handlerName, handler, transformer, options);
 
         } else if (typeof handler === "function") {
 

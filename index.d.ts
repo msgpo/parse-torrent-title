@@ -40,7 +40,13 @@ declare namespace ParseTorrentTitle {
         (title: string): ParserResult;
     }
 
+    interface Transformer {
+        (input: string): any;
+    }
+
     interface AddHandlerFunction {
+        (handlerName: string, handler: RegExp, transformer?: Transformer, options?: ParserOptions): void;
+        (handlerName: string, handler: RegExp, transformer?: Transformer): void;
         (handlerName: string, handler: RegExp, options?: ParserOptions): void;
         (handlerName: string, handler: Handler): void;
         (handler: Handler): void;
