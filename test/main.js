@@ -8,7 +8,9 @@ describe("Random releases", () => {
         expect(parse(releaseName)).to.deep.equal({
             title: "sons of anarchy",
             resolution: "480p",
+            seasons: [5],
             season: 5,
+            episodes: [10],
             episode: 10,
             source: "BluRay",
             codec: "x264",

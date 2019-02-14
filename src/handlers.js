@@ -80,24 +80,31 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("group", /- ?([^\-. ]+)$/);
 
     // Season
-    parser.addHandler("season", /((?:s\d{1,2}[., +/\\&-]+)+s\d{1,2}\b)/i, range);
-    parser.addHandler("season", /(?:\bcomplete\W)?\bseasons?\b[. -]?[([]?((?:\d{1,2}[., /\\&-]+)+\d{1,2}\b)[)\]]?/i, range);
-    parser.addHandler("season", /(?:\bcomplete\W)?\bseasons?\b[. -]?(\d{1,2}[. -]?(?:to|thru|and|\+|:)[. -]?\d{1,2})\b/i, range);
-    parser.addHandler("season", /(?:\bcomplete\W)?(?:saison|season)[. -]?(\d{1,2})/i, integer);
-    parser.addHandler("season", /(?:\bcomplete\W)?s(\d{1,2})(?:[\Wex]|$)/i, integer, { skipIfAlreadyFound: false });
-    parser.addHandler("season", /(\d{1,2})x\d{1,2}/, integer);
-    parser.addHandler("season", /[[(](\d{1,2})\.\d{1,2}[)\]]/, integer);
+    parser.addHandler("seasons", /((?:s\d{1,2}[., +/\\&-]+)+s\d{1,2}\b)/i, range);
+    parser.addHandler("seasons", /(?:\bcomplete\W)?\bseasons?\b[. -]?[([]?((?:\d{1,2}[., /\\&-]+)+\d{1,2}\b)[)\]]?/i, range);
+    parser.addHandler("seasons", /(?:\bcomplete\W)?\bseasons?\b[. -]?(\d{1,2}[. -]?(?:to|thru|and|\+|:)[. -]?\d{1,2})\b/i, range);
+    parser.addHandler("seasons", /(?:\bcomplete\W)?(?:saison|season)[. -]?(\d{1,2})/i, array(integer));
+    parser.addHandler("seasons", /(?:\bcomplete\W)?s(\d{1,2})(?:[\Wex]|$)/i, array(integer), { skipIfAlreadyFound: false });
+    parser.addHandler("seasons", /(\d{1,2})x\d{1,2}/, array(integer));
+    parser.addHandler("seasons", /[[(](\d{1,2})\.\d{1,2}[)\]]/, array(integer));
+
+    // adds single season info if its there's only single season
+    parser.addHandler("season", ({ result }) => {
+        if (result.seasons && result.seasons.length === 1) {
+            result.season = result.seasons[0];
+        }
+    });
 
     // Episode
-    parser.addHandler("episode", /(?:[\W\d]|^)[ex]p?(?:isode)?s?[ .]?[([]?(\d{1,3}(?:[ .-]*[ex&-]p?[ .]?\d{1,3})+)(?:\D|$)/i, range);
-    parser.addHandler("episode", /(?:[s .([-]|^)\d{1,2}[. -]*[ex]p?[. ]?(\d{1,2})(?:\D|$)/i, integer);
-    parser.addHandler("episode", /(?:[ .([-]|^)(\d{1,3}(?:[ .]?[,&-][ .]?\d{1,3})+)(?:[ .)\]-]|$)/i, range);
-    parser.addHandler("episode", /[ée]p(?:isode)?[. -]?(\d{1,3})(?:\D|$)/i, integer);
-    parser.addHandler("episode", /[[(]\d{1,2}\.(\d{1,2})[)\]]/, integer);
+    parser.addHandler("episodes", /(?:[\W\d]|^)[ex]p?(?:isode)?s?[ .]?[([]?(\d{1,3}(?:[ .-]*[ex&-]p?[ .]?\d{1,3})+)(?:\D|$)/i, range);
+    parser.addHandler("episodes", /(?:[s .([-]|^)\d{1,2}[. -]*[ex]p?[. ]?(\d{1,2})(?:\D|$)/i, array(integer));
+    parser.addHandler("episodes", /(?:[ .([-]|^)(\d{1,3}(?:[ .]?[,&-][ .]?\d{1,3})+)(?:[ .)\]-]|$)/i, range);
+    parser.addHandler("episodes", /[ée]p(?:isode)?[. -]?(\d{1,3})(?:\D|$)/i, array(integer));
+    parser.addHandler("episodes", /[[(]\d{1,2}\.(\d{1,2})[)\]]/, array(integer));
 
     // can be both absolute episode and season+episode in format 101
-    parser.addHandler("episode", ({ title, result, matched }) => {
-        if (!result.season && !result.episode) {
+    parser.addHandler("episodes", ({ title, result, matched }) => {
+        if (!result.seasons && !result.episodes) {
             const indexes = [matched.resolution, matched.source, matched.codec, matched.audio]
                 .filter(component => component)
                 .map(component => title.indexOf(component))
@@ -105,11 +112,17 @@ exports.addDefaults = /** @type Parser */ parser => {
             const endIndex = Math.min(...indexes, title.length);
             const match = title.substring(0, endIndex).match(/(?:[ .([-]|^)(\d{1,3})[ab]?(?:[ .(\]-]|$)/g);
             if (match) {
-                result.episode = (match.length > 1 ? match.splice(1, match.length) : match)
+                result.episodes = (match.length > 1 ? match.splice(1, match.length) : match)
                     .map(group => group.replace(/\D/g, ""))
                     .map(group => parseInt(group, 10));
-                result.episode = result.episode.length === 1 ? result.episode[0] : result.episode;
             }
+        }
+    });
+
+    // adds single season info if its there's only single season
+    parser.addHandler("episode", ({ result }) => {
+        if (result.episodes && result.episodes.length === 1) {
+            result.episode = result.episodes[0];
         }
     });
 

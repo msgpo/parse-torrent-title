@@ -44,22 +44,22 @@ describe("Parsing episode", () => {
 
     it("should detect multiple episodes with x prefix and hyphen separator", () => {
         const releaseName = "Friends - [7x23-24] - The One with Monica and Chandler's Wedding + Audio Commentary.mkv";
-        expect(parse(releaseName)).to.deep.include({ season: 7, episode: [23, 24] });
+        expect(parse(releaseName)).to.deep.include({ season: 7, episodes: [23, 24] });
     });
 
     it("should detect multiple episodes with episodes prefix and hyphen separator", () => {
         const releaseName = "Orange Is The New Black Season 5 Episodes 1-10 INCOMPLETE (LEAKED)";
-        expect(parse(releaseName)).to.deep.include({ episode: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] });
+        expect(parse(releaseName)).to.deep.include({ episodes: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] });
     });
 
     it("should detect multiple episodes with ep prefix and hyphen separator inside parentheses", () => {
         const releaseName = "Vikings.Season.05.Ep(01-10).720p.WebRip.2Ch.x265.PSA";
-        expect(parse(releaseName)).to.deep.include({ episode: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] });
+        expect(parse(releaseName)).to.deep.include({ episodes: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] });
     });
 
     it("should detect multiple episodes with e prefix and hyphen separator", () => {
         const releaseName = "Marvel's.Agents.of.S.H.I.E.L.D.S02E01-03.Shadows.1080p.WEB-DL.DD5.1";
-        expect(parse(releaseName)).to.deep.include({ episode: [1, 2, 3] });
+        expect(parse(releaseName)).to.deep.include({ episodes: [1, 2, 3] });
     });
 
     it("should detect absolute episode with ep prefix", () => {
@@ -79,7 +79,7 @@ describe("Parsing episode", () => {
 
     it("should detect multiple absolute episodes separated by hyphen", () => {
         const releaseName = "Naruto Shippuuden - 006-007.mkv";
-        expect(parse(releaseName)).to.deep.include({ episode: [6, 7] });
+        expect(parse(releaseName)).to.deep.include({ episodes: [6, 7] });
     });
 
     it("should detect absolute episode correctly not hindered by title digits with hashtag", () => {
@@ -109,7 +109,7 @@ describe("Parsing episode", () => {
 
     it("should detect multiple absolute episodes separated by comma", () => {
         const releaseName = "The Amazing World of Gumball - 103, 104 - The Third - The Debt.mkv";
-        expect(parse(releaseName)).to.deep.include({ episode: [103, 104] });
+        expect(parse(releaseName)).to.deep.include({ episodes: [103, 104] });
     });
 
     it("should detect absolute episode with a possible match at the end", () => {
