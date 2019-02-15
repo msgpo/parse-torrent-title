@@ -3,10 +3,16 @@ const { none } = require("./transformers");
 function extendOptions(options) {
     options = options || {};
 
-    const defaultOptions = { skipIfAlreadyFound: true };
+    const defaultOptions = {
+        skipIfAlreadyFound: true,
+        remove: false
+    };
 
     if (typeof options.skipIfAlreadyFound === "undefined") {
         options.skipIfAlreadyFound = defaultOptions.skipIfAlreadyFound;
+    }
+    if (typeof options.remove === "undefined") {
+        options.remove = defaultOptions.remove;
     }
 
     return options;
@@ -23,9 +29,12 @@ function createHandlerFromRegExp(name, regExp, transformer, options) {
 
         if (rawMatch) {
             const transformed = transformer(cleanMatch || rawMatch);
-            matched[name] = matched[name] || rawMatch;
+            matched[name] = matched[name] || { rawMatch, matchIndex: match.index };
             result[name] = result[name] || options.value || transformed;
-            return transformed && match.index;
+            return {
+                matchIndex: transformed && match.index,
+                remove: options.remove
+            };
         }
 
         return null;
@@ -91,9 +100,12 @@ class Parser {
         let endOfTitle = title.length;
 
         for (const handler of this.handlers) {
-            const matchIndex = handler({ title, result, matched });
-            if (matchIndex && matchIndex < endOfTitle) {
-                endOfTitle = matchIndex;
+            const matchResult = handler({ title, result, matched });
+            if (matchResult && matchResult.remove) {
+                title = title.replace(matched[handler.handlerName].rawMatch, "");
+            }
+            if (matchResult && matchResult.matchIndex && matchResult.matchIndex < endOfTitle) {
+                endOfTitle = matchResult.matchIndex;
             }
         }
 

@@ -2,12 +2,15 @@ const { value, integer, boolean, lowercase, range, array } = require("./transfor
 
 exports.addDefaults = /** @type Parser */ parser => {
 
+    // Group
+    parser.addHandler("group", /- ?([^\-. ]+)$/, { remove: true });
+
     // Year
-    parser.addHandler("year", /(?!^)[([]?((?:19[0-9]|20[012])[0-9])[)\]]?/, integer);
+    parser.addHandler("year", /(?!^)[([]?((?:19[0-9]|20[012])[0-9])[)\]]?/, integer, { remove: true });
 
     // Resolution
-    parser.addHandler("resolution", /([0-9]{3,4}[pi])/i, lowercase);
-    parser.addHandler("resolution", /(4k)/i, lowercase);
+    parser.addHandler("resolution", /([0-9]{3,4}[pi])/i, lowercase, { remove: true });
+    parser.addHandler("resolution", /(4k)/i, lowercase, { remove: true });
 
     // Extended
     parser.addHandler("extended", /EXTENDED/, boolean);
@@ -37,7 +40,7 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("region", /R[0-9]/);
 
     // Container
-    parser.addHandler("container", /\b(MKV|AVI|MP4|WMV|MPG|MPEG)\b/i, lowercase);
+    parser.addHandler("container", /(?:\.)?\b(MKV|AVI|MP4|WMV|MPG|MPEG)\b/i, lowercase, { remove: true });
 
     // Source
     parser.addHandler("source", /\b(?:HD-?)?CAM\b/);
@@ -62,7 +65,7 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("source", /\bHDTV\b/i, value("HDTV"));
 
     // Codec
-    parser.addHandler("codec", /dvix|mpeg2|divx|xvid|[xh][-. ]?26[45]|avc|hevc/i, lowercase);
+    parser.addHandler("codec", /dvix|mpeg2|divx|xvid|[xh][-. ]?26[45]|avc|hevc/i, lowercase, { remove: true });
     parser.addHandler("codec", ({ result }) => {
         if (result.codec) {
             result.codec = result.codec.replace(/[ .-]/, "");
@@ -72,12 +75,9 @@ exports.addDefaults = /** @type Parser */ parser => {
     // Audio
     parser.addHandler("audio", /MD|MP3|mp3|FLAC|Atmos|DTS(?:-HD)?|TrueHD/, lowercase);
     parser.addHandler("audio", /Dual[- ]Audio/i, lowercase);
-    parser.addHandler("audio", /AC-?3(?:[.-]5\.1)?/i, value("ac3"));
-    parser.addHandler("audio", /DD5[. ]?1/i, value("dd5.1"));
-    parser.addHandler("audio", /AAC(?:[. ]?2[. ]0)?/, value("aac"));
-
-    // Group
-    parser.addHandler("group", /- ?([^\-. ]+)$/);
+    parser.addHandler("audio", /AC-?3(?:[.-]5\.1)?/i, value("ac3"), { remove: true });
+    parser.addHandler("audio", /DD5[. ]?1/i, value("dd5.1"), { remove: true });
+    parser.addHandler("audio", /AAC(?:[. ]?2[. ]0)?/, value("aac"), { remove: true });
 
     // Season
     parser.addHandler("seasons", /((?:s\d{1,2}[., +/\\&-]+)+s\d{1,2}\b)/i, range);
@@ -107,7 +107,7 @@ exports.addDefaults = /** @type Parser */ parser => {
         if (!result.seasons && !result.episodes) {
             const indexes = [matched.resolution, matched.source, matched.codec, matched.audio]
                 .filter(component => component)
-                .map(component => title.indexOf(component))
+                .map(component => component.matchIndex)
                 .filter(index => index > 0);
             const endIndex = Math.min(...indexes, title.length);
             const match = title.substring(0, endIndex).match(/(?:[ .([-]|^)(\d{1,3})[ab]?(?:[ .(\]-]|$)/g);
