@@ -52,8 +52,11 @@ function cleanTitle(rawTitle) {
         cleanedTitle = cleanedTitle.replace(/\./g, " ");
     }
 
-    cleanedTitle = cleanedTitle.replace(/_/g, " ");
-    cleanedTitle = cleanedTitle.replace(/([(_]|- )$/, "").trim();
+    cleanedTitle = cleanedTitle
+        .replace(/_/g, " ")
+        .replace(/([^\w)]+)$/, "")
+        .replace(/^\[.+][ ._]?/, "")
+        .trim();
 
     return cleanedTitle;
 }
