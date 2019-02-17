@@ -54,8 +54,9 @@ function cleanTitle(rawTitle) {
 
     cleanedTitle = cleanedTitle
         .replace(/_/g, " ")
-        .replace(/([^\w)]+)$/, "")
-        .replace(/^\[.+][ ._]?/, "")
+        .replace(/([^\w)\]]+)$/, "")
+        .replace(/^\[.*][ .]?(.+)/, "$1")
+        .replace(/(.+)[ .]?\[.*]$/, "$1")
         .trim();
 
     return cleanedTitle;
