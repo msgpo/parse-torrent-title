@@ -79,6 +79,19 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("audio", /DD5[. ]?1/i, value("dd5.1"), { remove: true });
     parser.addHandler("audio", /AAC(?:[. ]?2[. ]0)?/, value("aac"), { remove: true });
 
+    // Volumes
+    parser.addHandler("volumes", /vol(?:s|umes?)?[. -]*(?:\d{1,2}[., +/\\&-]+)+\d{1,2}\b/i, range, { remove: true });
+    parser.addHandler("volumes", ({ title, result, matched }) => {
+        const startIndex = matched.year && matched.year.matchIndex || 0;
+        const match = title.substring(startIndex).match(/vol(?:ume)?[. -]*(\d{1,2})/i);
+        if (match) {
+            matched.volumes = { match: match[0], matchIndex: match.index };
+            result.volumes = array(integer)(match[1]);
+            return { matchIndex: match.index, remove: true };
+        }
+        return null;
+    });
+
     // Season
     parser.addHandler("seasons", /((?:s\d{1,2}[., +/\\&-]+)+s\d{1,2}\b)/i, range);
     parser.addHandler("seasons", /(?:\bcomplete\W)?\bseasons?\b[. -]?[([]?((?:\d{1,2}[., /\\&-]+)+\d{1,2}\b)[)\]]?/i, range);
