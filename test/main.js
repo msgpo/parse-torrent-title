@@ -184,4 +184,14 @@ describe("Random releases", () => {
             group: "Justiso",
         });
     });
+
+    it("Stephen Colbert 2019 10 25 Eddie Murphy 480p x264-mSD [eztv]", () => {
+        const releaseName = "Stephen Colbert 2019 10 25 Eddie Murphy 480p x264-mSD [eztv]";
+        expect(parse(releaseName)).to.deep.equal({
+            title: "Stephen Colbert",
+            date: "2019-10-25",
+            resolution: "480p",
+            codec: "x264",
+        });
+    });
 });
