@@ -118,10 +118,14 @@ exports.addDefaults = /** @type Parser */ parser => {
     });
 
     // Episode
-    parser.addHandler("episodes", /(?:[\W\d]|^)[ex]p?(?:isode)?s?[ .]?[([]?(\d{1,3}(?:[ .+-]*[ex&+-]e?p?[ .]?\d{1,3})+)(?:\W|$)/i, range);
-    parser.addHandler("episodes", /(?:[s .([-]|^)\d{1,2}[. -]*[ex]{1,2}p?[. ]?(\d{1,3})(?:[ab]|\W|$)/i, array(integer));
+    parser.addHandler("episodes", /(?:[\W\d]|^)e[ .]?[([]?(\d{1,3}(?:[ .]?[&+-]e?[ .]?\d{1,3})+)(?:\W|$)/i, range);
+    parser.addHandler("episodes", /(?:[\W\d]|^)ep[ .]?[([]?(\d{1,3}(?:[ .]?[&+-]e?p?[ .]?\d{1,3})+)(?:\W|$)/i, range);
+    parser.addHandler("episodes", /(?:[\W\d]|^)x[ .]?[([]?(\d{1,3}(?:[ .]?[x-][ .]?\d{1,3})+)(?:\W|$)/i, range);
+    parser.addHandler("episodes", /(?:[\W\d]|^)episodes?[ .]?[([]?(\d{1,3}(?:[ .+-]*[&+][ .]?\d{1,3})+)(?:\W|$)/i, range);
+    parser.addHandler("episodes", /(?:\W|^)s\d{1,2}[. ]?[x-]?[. ]?(?:e|x|ep|-)[. ]?(\d{1,3})(?:\W|$)/i, array(integer));
     parser.addHandler("episodes", /(?<!seasons?\W*)(?:[ .([-]|^)(\d{1,3}(?:[ .]?[,&+-][ .]?\d{1,3})+)(?:[ .)\]-]|$)/i, range);
     parser.addHandler("episodes", /[ée]p(?:isode)?[. -]?(\d{1,3})(?:\W|$)/i, array(integer));
+    parser.addHandler("episodes", /(?:\W|^)\d{1,2}[. ]?x[. ]?(\d{1,2})(?:\W|$)/, array(integer));
     parser.addHandler("episodes", /[[(]\d{1,2}\.(\d{1,2})[)\]]/, array(integer));
 
     // can be both absolute episode and season+episode in format 101

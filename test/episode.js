@@ -202,5 +202,20 @@ describe("Parsing episode", () => {
         expect(parse(releaseName)).to.deep.include({ episode: 3 });
         expect(parse(releaseName)).to.not.have.property("seasons");
     });
+
+    it("should detect episode after season with separator", () => {
+        const releaseName = "Food Wars! Shokugeki No Souma S4 - 11 (1080p)(HEVC x265 10bit)";
+        expect(parse(releaseName)).to.deep.include({ episode: 11 });
+    });
+
+    it("should not detect episode range for mismatch episode marker e vs ep", () => {
+        const releaseName = "Dragon Ball Super S05E53 - Ep.129.mkv";
+        expect(parse(releaseName)).to.deep.include({ episode: 53 });
+    });
+
+    it("should not detect episode range with other parameter ending", () => {
+        const releaseName = "DShaun.Micallefs.MAD.AS.HELL.S10E03.576p.x642-YADNUM.mkv";
+        expect(parse(releaseName)).to.deep.include({ episode: 3 });
+    });
 });
 
