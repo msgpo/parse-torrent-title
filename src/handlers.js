@@ -159,9 +159,8 @@ exports.addDefaults = /** @type Parser */ parser => {
 
     parser.addHandler("complete", /(?:\bthe\W)?(?:\bcomplete|collection|dvd)?\b[ .]?\bbox[ .-]?set\b/i, boolean);
     parser.addHandler("complete", /(?:\bthe\W)?(?:\bcomplete|collection|dvd)?\b[ .]?\bmini[ .-]?series\b/i, boolean);
-    parser.addHandler("complete", /(?:\bthe\W)?(?:\bcomplete|full|all)\b.*\b(?:series|seasons|collection|episodes)\b/i, boolean);
-    parser.addHandler("complete", /\bseries\b[ .]\b(?:complete|collection)\b/i, boolean);
-    parser.addHandler("complete", /\bseasons\b[ .]\b(?:complete|collection)\b/i, boolean);
+    parser.addHandler("complete", /(?:\bthe\W)?(?:\bcomplete|full|all)\b.*\b(?:series|seasons|collection|episodes|set|pack|movies)\b/i, boolean);
+    parser.addHandler("complete", /\b(?:series|seasons|movies)\b[ .]\b(?:complete|collection)\b/i, boolean);
     parser.addHandler("complete", /(?:\bthe\W)?\bultimate\b[ .]\bcollection\b/i, boolean, { skipIfAlreadyFound: false });
 
     // Language
