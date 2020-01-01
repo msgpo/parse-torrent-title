@@ -218,9 +218,34 @@ describe("Parsing episode", () => {
         expect(parse(releaseName)).to.deep.include({ episode: 3 });
     });
 
-    it("should episode with a dot and hyphen separator", () => {
+    it("should not detect episode range with spaced hyphen separator", () => {
+        const releaseName = "The Avengers (EMH) - S01 E15 - 459 (1080p - BluRay).mp4";
+        expect(parse(releaseName)).to.deep.include({ episode: 15 });
+    });
+
+    it("should detect episode with a dot and hyphen separator", () => {
         const releaseName = "My Little Pony FiM - 6.01 - No Second Prances.mkv";
         expect(parse(releaseName)).to.deep.include({ episode: 1 });
+    });
+
+    it("should detect episode with number in a title", () => {
+        const releaseName = "Mob Psycho 100 - 09 [1080p].mkv";
+        expect(parse(releaseName)).to.deep.include({ episode: 9 });
+    });
+
+    it("should detect episode with of separator", () => {
+        const releaseName = "BBC Indian Ocean with Simon Reeve 5of6 Sri Lanka to Bangladesh.avi";
+        expect(parse(releaseName)).to.deep.include({ episode: 5 });
+    });
+
+    it("should detect multiple episodes with E sign and no separator", () => {
+        const releaseName = "Stargate Universe S01E01E02E03.mp4";
+        expect(parse(releaseName)).to.deep.include({ episodes: [1, 2, 3] });
+    });
+
+    it("should detect episode with E symbols without season", () => {
+        const releaseName = "Mob.Psycho.100.II.E10.720p.WEB.x264-URANiME.mkv";
+        expect(parse(releaseName)).to.deep.include({ episode: 10 });
     });
 });
 

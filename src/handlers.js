@@ -119,16 +119,17 @@ exports.addDefaults = /** @type Parser */ parser => {
     });
 
     // Episode
-    parser.addHandler("episodes", /(?:[\W\d]|^)e[ .]?[([]?(\d{1,3}(?:[ .]?[&+-]e?[ .]?\d{1,3})+)(?:\W|$)/i, range);
-    parser.addHandler("episodes", /(?:[\W\d]|^)ep[ .]?[([]?(\d{1,3}(?:[ .]?[&+-]e?p?[ .]?\d{1,3})+)(?:\W|$)/i, range);
-    parser.addHandler("episodes", /(?:[\W\d]|^)x[ .]?[([]?(\d{1,3}(?:[ .]?[x-][ .]?\d{1,3})+)(?:\W|$)/i, range);
-    parser.addHandler("episodes", /(?:[\W\d]|^)episodes?[ .]?[([]?(\d{1,3}(?:[ .+-]*[&+][ .]?\d{1,3})+)(?:\W|$)/i, range);
+    parser.addHandler("episodes", /(?:[\W\d]|^)ep?[ .]?[([]?(\d{1,3}(?:[ .]?(?:[&+]|ep?){1,2}[ .]?\d{1,3})+)(?:\W|$)/i, range);
+    parser.addHandler("episodes", /(?:[\W\d]|^)\d+x[ .]?[([]?(\d{1,3}(?:[ .]?[x][ .]?\d{1,3})+)(?:\W|$)/i, range);
+    parser.addHandler("episodes", /(?:[\W\d]|^)episodes?[ .]?[([]?(\d{1,3}(?:[ .+]*[&+][ .]?\d{1,3})+)(?:\W|$)/i, range);
+    parser.addHandler("episodes", /(?:[\W\d]|^)(?:e|ep|episodes?|\d+x)[ .]?[([]?(\d{1,3}(?:-?\d{1,3})+)(?:\W|$)/i, range);
     parser.addHandler("episodes", /(?:\W|^)s\d{1,2}[. ]?[x-]?[. ]?(?:e|x|ep|-)[. ]?(\d{1,3})(?:\W|$)/i, array(integer));
     parser.addHandler("episodes", /(?<!seasons?\W*)(?:[ .([-]|^)(\d{1,3}(?:[ .]?[,&+-][ .]?\d{1,3})+)(?:[ .)\]-]|$)/i, range);
     parser.addHandler("episodes", /[ée]p(?:isode)?[. -]?(\d{1,3})(?:\W|$)/i, array(integer));
     parser.addHandler("episodes", /(?:\W|^)\d{1,2}[. ]?x[. ]?(\d{1,2})(?:\W|$)/, array(integer));
     parser.addHandler("episodes", /[[(]\d{1,2}\.(\d{1,2})[)\]]/, array(integer));
     parser.addHandler("episodes", /-\s?\d{1,2}\.(\d{1,2})\s?-/, array(integer));
+    parser.addHandler("episodes", /(?:\W|^)(\d{1,2})[. ]?(?:of|из)[. ]?\d{1,2}(?:\W|$)/, array(integer));
 
     // can be both absolute episode and season+episode in format 101
     parser.addHandler("episodes", ({ title, result, matched }) => {
@@ -139,7 +140,7 @@ exports.addDefaults = /** @type Parser */ parser => {
                 .filter(index => index > 0);
             const startIndex = matched.year && matched.year.matchIndex || 0;
             const endIndex = Math.min(...indexes, title.length);
-            const match = title.substring(startIndex, endIndex).match(/(?:[ .([-]|^)(\d{1,3})(?:a|b|v\d)?(?:\W|$)/);
+            const match = title.substring(startIndex, endIndex).match(/(?:[ .]?[([-]|^)[ .]?(\d{1,3})(?:a|b|v\d)?(?:\W|$)/);
             if (match) {
                 result.episodes = [match[1]]
                     .map(group => group.replace(/\D/g, ""))
