@@ -109,6 +109,7 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("seasons", /(?:(?:\bthe\W)?\bcomplete)?(?:\W|^)s(\d{1,2})(?:[\Wex]|$)/i, array(integer), { skipIfAlreadyFound: false });
     parser.addHandler("seasons", /(?:\D|^)(\d{1,2})x\d{1,3}(?:\D|$)/, array(integer));
     parser.addHandler("seasons", /[[(](\d{1,2})\.\d{1,2}[)\]]/, array(integer));
+    parser.addHandler("seasons", /-\s?(\d{1,2})\.\d{1,2}\s?-/, array(integer));
 
     // adds single season info if its there's only single season
     parser.addHandler("season", ({ result }) => {
@@ -127,6 +128,7 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("episodes", /[ée]p(?:isode)?[. -]?(\d{1,3})(?:\W|$)/i, array(integer));
     parser.addHandler("episodes", /(?:\W|^)\d{1,2}[. ]?x[. ]?(\d{1,2})(?:\W|$)/, array(integer));
     parser.addHandler("episodes", /[[(]\d{1,2}\.(\d{1,2})[)\]]/, array(integer));
+    parser.addHandler("episodes", /-\s?\d{1,2}\.(\d{1,2})\s?-/, array(integer));
 
     // can be both absolute episode and season+episode in format 101
     parser.addHandler("episodes", ({ title, result, matched }) => {

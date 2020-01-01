@@ -217,5 +217,10 @@ describe("Parsing episode", () => {
         const releaseName = "DShaun.Micallefs.MAD.AS.HELL.S10E03.576p.x642-YADNUM.mkv";
         expect(parse(releaseName)).to.deep.include({ episode: 3 });
     });
+
+    it("should episode with a dot and hyphen separator", () => {
+        const releaseName = "My Little Pony FiM - 6.01 - No Second Prances.mkv";
+        expect(parse(releaseName)).to.deep.include({ episode: 1 });
+    });
 });
 

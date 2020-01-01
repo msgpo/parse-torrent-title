@@ -171,5 +171,10 @@ describe("Parsing season", () => {
         const releaseName = "Doctor Who S01--S07--Complete with holiday episodes";
         expect(parse(releaseName)).to.deep.include({ seasons: [1, 2, 3, 4, 5, 6, 7] });
     });
+
+    it("should season with a dot and hyphen separator", () => {
+        const releaseName = "My Little Pony FiM - 6.01 - No Second Prances.mkv";
+        expect(parse(releaseName)).to.deep.include({ season: 6 });
+    });
 });
 
