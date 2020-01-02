@@ -31,5 +31,21 @@ exports.range = input => {
     return array;
 };
 
+exports.yearRange = input => {
+    const parts = input.split(/\D+/);
+    const start = parts[0] && parseInt(parts[0], 10);
+    let end = parts[1] && parseInt(parts[1], 10);
+    if (!end) {
+        return start;
+    }
+    if (end < 100) {
+        end = end + start - start % 100;
+    }
+    if (end <= start) {
+        return null; // not a year range, try another year handler
+    }
+    return `${start}-${end}`;
+};
+
 exports.array = chain => input => [chain ? chain(input) : input];
 

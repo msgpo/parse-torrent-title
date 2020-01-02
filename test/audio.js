@@ -50,7 +50,7 @@ describe("Parsing audio", () => {
         expect(parse(releaseName)).to.deep.include({ audio: "mp3" });
     });
 
-    it("should detect the MD audio correctly", () => {
+    xit("should detect the MD audio correctly", () => {
         const releaseName = "Detroit.2017.BDRip.MD.GERMAN.x264-SPECTRE";
 
         expect(parse(releaseName)).to.deep.include({ audio: "md" });

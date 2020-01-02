@@ -1,4 +1,4 @@
-const { value, integer, boolean, lowercase, date, range, array } = require("./transformers");
+const { value, integer, boolean, lowercase, date, range, yearRange, array } = require("./transformers");
 
 exports.addDefaults = /** @type Parser */ parser => {
 
@@ -7,7 +7,10 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("date", /(?<=\W)([([]?(?:0[1-9]|[12][0-9]|3[01])[. -/\\](?:0[1-9]|1[012])[. -/\\](?:19[7-9]|20[012])[0-9][)\]]?)(?=\W)/, date, { remove: true });
 
     // Year
+    parser.addHandler("year", /[([]?[ .]?((?:19[0-9]|20[012])[0-9][ .]?-[ .]?(?:19[0-9]|20[012])[0-9])[ .]?[)\]]?/, yearRange, { remove: true });
+    parser.addHandler("year", /[([][ .]?((?:19[0-9]|20[012])[0-9][ .]?-[ .]?(?:[0-9]{2}))[ .]?[)\]]/, yearRange, { remove: true });
     parser.addHandler("year", /(?!^)[([]?((?:19[0-9]|20[012])[0-9])[)\]]?/, integer, { remove: true });
+    parser.addHandler("year", /[([]?((?:19[0-9]|20[012])[0-9])[)\]]?/, integer, { remove: true });
 
     // Resolution
     parser.addHandler("resolution", /([0-9]{3,4}[pi])/i, lowercase, { remove: true });
@@ -78,10 +81,10 @@ exports.addDefaults = /** @type Parser */ parser => {
     });
 
     // Audio
-    parser.addHandler("audio", /MD|MP3|mp3|FLAC|Atmos|DTS(?:-HD)?|TrueHD/, lowercase);
+    parser.addHandler("audio", /\bMP3|mp3|FLAC|Atmos|DTS(?:-HD)?|TrueHD\b/, lowercase);
     parser.addHandler("audio", /Dual[- ]Audio/i, lowercase);
     parser.addHandler("audio", /AC-?3(?:[.-]5\.1)?/i, value("ac3"), { remove: true });
-    parser.addHandler("audio", /5\.1ch/i, value("ac3"), { remove: true });
+    parser.addHandler("audio", /\b5\.1ch\b/i, value("ac3"), { remove: true });
     parser.addHandler("audio", /DD5[. ]?1/i, value("dd5.1"), { remove: true });
     parser.addHandler("audio", /AAC(?:[. ]?2[. ]0)?/, value("aac"), { remove: true });
 

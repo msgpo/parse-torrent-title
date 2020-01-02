@@ -29,12 +29,14 @@ function createHandlerFromRegExp(name, regExp, transformer, options) {
 
         if (rawMatch) {
             const transformed = transformer(cleanMatch || rawMatch);
-            matched[name] = matched[name] || { rawMatch, matchIndex: match.index };
-            result[name] = result[name] || options.value || transformed;
-            return {
-                matchIndex: transformed && match.index,
-                remove: options.remove
-            };
+            if (transformed) {
+                matched[name] = matched[name] || { rawMatch, matchIndex: match.index };
+                result[name] = result[name] || options.value || transformed;
+                return {
+                    matchIndex: match.index,
+                    remove: options.remove
+                };
+            }
         }
 
         return null;

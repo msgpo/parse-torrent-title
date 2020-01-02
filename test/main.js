@@ -194,4 +194,23 @@ describe("Random releases", () => {
             codec: "x264",
         });
     });
+
+    it("House MD Season 7 Complete MKV", () => {
+        const releaseName = "House MD Season 7 Complete MKV";
+        expect(parse(releaseName)).to.deep.equal({
+            title: "House MD",
+            season: 7,
+            seasons: [7],
+            container: "mkv"
+        });
+    });
+
+    it("2008 The Incredible Hulk Feature Film.mp4", () => {
+        const releaseName = "2008 The Incredible Hulk Feature Film.mp4";
+        expect(parse(releaseName)).to.deep.equal({
+            title: "The Incredible Hulk Feature Film",
+            year: 2008,
+            container: "mp4"
+        });
+    });
 });

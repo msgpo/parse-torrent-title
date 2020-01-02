@@ -247,5 +247,10 @@ describe("Parsing episode", () => {
         const releaseName = "Mob.Psycho.100.II.E10.720p.WEB.x264-URANiME.mkv";
         expect(parse(releaseName)).to.deep.include({ episode: 10 });
     });
+
+    it("should detect episode without season", () => {
+        const releaseName = "[OMDA] Bleach - 002 (480p x264 AAC) [rich_jc].mkv";
+        expect(parse(releaseName)).to.deep.include({ episode: 2 });
+    });
 });
 

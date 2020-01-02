@@ -176,5 +176,10 @@ describe("Parsing season", () => {
         const releaseName = "My Little Pony FiM - 6.01 - No Second Prances.mkv";
         expect(parse(releaseName)).to.deep.include({ season: 6 });
     });
+
+    it("should season with a year range afterwards", () => {
+        const releaseName = "Empty Nest Season 1 (1988 - 89) fiveofseven";
+        expect(parse(releaseName)).to.deep.include({ season: 1 });
+    });
 });
 

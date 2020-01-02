@@ -25,4 +25,19 @@ describe("Paring year", () => {
 
         expect(parse(releaseName)).to.deep.include({ year: 2009 });
     });
+
+    it("should detect the year at the beginning if there is none", () => {
+        const releaseName = "2008 The Incredible Hulk Feature Film.mp4'";
+        expect(parse(releaseName)).to.deep.include({ year: 2008 });
+    });
+
+    it("should detect the year range", () => {
+        const releaseName = "Harry Potter All Movies Collection 2001-2011 720p Dual KartiKing'";
+        expect(parse(releaseName)).to.deep.include({ year: "2001-2011" });
+    });
+
+    it("should detect year range with simplified end year", () => {
+        const releaseName = "Empty Nest Season 1 (1988 - 89) fiveofseven";
+        expect(parse(releaseName)).to.deep.include({ year: "1988-1989" });
+    });
 });

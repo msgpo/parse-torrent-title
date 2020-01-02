@@ -7,7 +7,7 @@ declare namespace ParseTorrentTitle {
 
     interface ParserResult {
         title: string;
-        year?: number;
+        year?: number | string;
         resolution?: string;
         extended?: boolean;
         unrated?: boolean;
