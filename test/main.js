@@ -213,4 +213,16 @@ describe("Random releases", () => {
             container: "mp4"
         });
     });
+
+    it("【4月/悠哈璃羽字幕社】[UHA-WINGS][不要输！恶之军团][Makeruna!! Aku no Gundan!][04][1080p AVC_AAC][简繁外挂][sc_tc]", () => {
+        const releaseName = "【4月/悠哈璃羽字幕社】[UHA-WINGS][不要输！恶之军团][Makeruna!! Aku no Gundan!][04][1080p AVC_AAC][简繁外挂][sc_tc]";
+        expect(parse(releaseName)).to.deep.equal({
+            title: "Makeruna!! Aku no Gundan!",
+            episodes: [4],
+            episode: 4,
+            resolution: "1080p",
+            codec: "avc",
+            audio: "aac",
+        });
+    });
 });
