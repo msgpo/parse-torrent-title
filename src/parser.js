@@ -1,5 +1,12 @@
 const { none } = require("./transformers");
 
+// chinese/japanese/russian chars https://stackoverflow.com/a/43419070
+const NON_ENGLISH_CHARS = "\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f\u0400-\u04ff";
+const ALT_TITLES_REGEX = new RegExp(`[^/|]*[${NON_ENGLISH_CHARS}][^/|]*[${NON_ENGLISH_CHARS}][^/|]*[/|]|[/|][^/|]*[${NON_ENGLISH_CHARS}][^/|]*[${NON_ENGLISH_CHARS}][^/|]*`, "g");
+const NOT_ONLY_NON_ENGLISH_REGEX = new RegExp(`(?<=\\w.*)[${NON_ENGLISH_CHARS}].*[${NON_ENGLISH_CHARS}]|[${NON_ENGLISH_CHARS}].*[${NON_ENGLISH_CHARS}](?=.*\\w)`, "g");
+const NOT_ALLOWED_SYMBOLS_AT_START_AND_END = new RegExp(`^[^\\w${NON_ENGLISH_CHARS}#[【★]+|[ \\-:/\\\\[|{(#$&^]+$`, "g");
+const REMAINING_NOT_ALLOWED_SYMBOLS_AT_START_AND_END = new RegExp(`^[^\\w${NON_ENGLISH_CHARS}#]+|]$`, "g");
+
 function extendOptions(options) {
     options = options || {};
 
@@ -56,10 +63,13 @@ function cleanTitle(rawTitle) {
 
     cleanedTitle = cleanedTitle
         .replace(/_/g, " ")
-        .replace(/([^\w!?%+~')\]]+)$/, "")
-        .replace(/^[[【].*[\]】][ .]?(.+)/, "$1")
-        .replace(/(.+)[ .]?\[.*]$/, "$1")
-        .replace(/(^\[|]$)/g, "")
+        .replace(/[[(]movie[)\]]/i, "") // clear movie indication flag
+        .replace(NOT_ALLOWED_SYMBOLS_AT_START_AND_END, "")
+        .replace(/^[[【★].*[\]】★][ .]?(.+)/, "$1") // remove release group markings sections from the start
+        .replace(/(.+)[ .]?[[【★].*[\]】★]$/, "$1") // remove unneeded markings section at the end if present
+        .replace(ALT_TITLES_REGEX, "") // remove alt language titles
+        .replace(NOT_ONLY_NON_ENGLISH_REGEX, "") // remove non english chars if they are not the only ones left
+        .replace(REMAINING_NOT_ALLOWED_SYMBOLS_AT_START_AND_END, "")
         .trim();
 
     return cleanedTitle;

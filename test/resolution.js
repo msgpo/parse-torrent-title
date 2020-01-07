@@ -25,4 +25,9 @@ describe("Parsing resolution", () => {
 
         expect(parse(releaseName)).to.deep.include({ resolution: "4k" });
     });
+
+    it("should detect custom resolution correctly", () => {
+        const releaseName = "[JacobSwaggedUp] Kizumonogatari I: Tekketsu-hen (BD 1280x544) [MP4 Movie]";
+        expect(parse(releaseName)).to.deep.include({ resolution: "1280x544" });
+    });
 });

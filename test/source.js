@@ -46,5 +46,15 @@ describe("Parsing source", () => {
         const releaseName = "The.OA.1x08.L.Io.Invisibile.ITA.WEBMux.x264-UBi.mkv";
         expect(parse(releaseName)).to.deep.include({ source: "WEBMux" });
     });
+
+    it("should detect the BD source correctly", () => {
+        const releaseName = "[UsifRenegade] Cardcaptor Sakura [BD][Remastered][1080p][HEVC_10Bit][Dual] + Movies";
+        expect(parse(releaseName)).to.deep.include({ source: "BDRip" });
+    });
+
+    it("should detect the BD-RM source correctly", () => {
+        const releaseName = "[UsifRenegade] Cardcaptor Sakura - 54 [BD-RM][1080p][x265_10Bit][Dual_AAC].mkv";
+        expect(parse(releaseName)).to.deep.include({ source: "BDRip" });
+    });
 });
 

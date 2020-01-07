@@ -13,11 +13,12 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("year", /[([]?((?:19[0-9]|20[012])[0-9])[)\]]?/, integer, { remove: true });
 
     // Resolution
-    parser.addHandler("resolution", /([0-9]{3,4}[pi])/i, lowercase, { remove: true });
     parser.addHandler("resolution", /[([]?1920x1080[)\]]?/i, value('1080p'), { remove: true });
     parser.addHandler("resolution", /[([]?(?:1280|960)x720[)\]]?/i, value('720p'), { remove: true });
     parser.addHandler("resolution", /[([]?640x480[)\]]?/i, value('480p'), { remove: true });
-    parser.addHandler("resolution", /(4k)/i, lowercase, { remove: true });
+    parser.addHandler("resolution", /[([]?(\d{3,4}x\d{3,4})[)\]]?/i, lowercase, { remove: true });
+    parser.addHandler("resolution", /[([]?4k[)\]]?/i, value('4k'), { remove: true });
+    parser.addHandler("resolution", /([0-9]{3,4}[pi])/i, lowercase, { remove: true });
 
     // Extended
     parser.addHandler("extended", /EXTENDED/, boolean);
@@ -47,14 +48,14 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("region", /R[0-9]/);
 
     // Container
-    parser.addHandler("container", /(?:\.)?\b(MKV|AVI|MP4|WMV|MPG|MPEG)\b/i, lowercase, { remove: true });
+    parser.addHandler("container", /(?:\.)?[[(]?\b(MKV|AVI|MP4|WMV|MPG|MPEG)\b[\])]?/i, lowercase, { remove: true });
 
     // Source
     parser.addHandler("source", /\b(?:HD-?)?CAM\b/, { remove: true });
     parser.addHandler("source", /\b(?:HD-?)?T(?:ELE)?S(?:YNC)?\b/i, { remove: true });
     parser.addHandler("source", /\bHD-?Rip\b/i, { remove: true });
     parser.addHandler("source", /\bBRRip\b/i, value("BRRip"), { remove: true });
-    parser.addHandler("source", /\bBDRip\b/i, value("BDRip"), { remove: true });
+    parser.addHandler("source", /\bBDRip\b|\bBD-RM\b|[[(]BD[\]) .,-]/i, value("BDRip"), { remove: true });
     parser.addHandler("source", /\bDVDRip\b/i, value("DVDRip"), { remove: true });
     parser.addHandler("source", /\bDVD(?:R[0-9])?\b/i, value("DVD"), { remove: true });
     parser.addHandler("source", /\bDVD?Scr\b/i, value("DVDScr"), { remove: true });
