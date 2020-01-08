@@ -252,5 +252,25 @@ describe("Parsing episode", () => {
         const releaseName = "[OMDA] Bleach - 002 (480p x264 AAC) [rich_jc].mkv";
         expect(parse(releaseName)).to.deep.include({ episode: 2 });
     });
+
+    it("should detect multiple episodes with x episode marker and hyphen separator", () => {
+        const releaseName = "BoJack Horseman [06x01-08 of 16] (2019-2020) WEB-DLRip 720p";
+        expect(parse(releaseName)).to.deep.include({ episodes: [1, 2, 3, 4, 5, 6, 7, 8] });
+    });
+
+    it("should detect multiple episodes with russian episode marker and hyphen separator", () => {
+        const releaseName = "Мистер Робот / Mr. Robot / Сезон: 2 / Серии: 1-5 (12) [2016, США, WEBRip 1080p] MVO";
+        expect(parse(releaseName)).to.deep.include({ episodes: [1, 2, 3, 4, 5] });
+    });
+
+    it("should detect episode with russian episode marker and single episode", () => {
+        const releaseName = "Викинги / Vikings / Сезон: 5 / Серии: 1 [2017, WEB-DL 1080p] MVO";
+        expect(parse(releaseName)).to.deep.include({ episode: 1 });
+    });
+
+    it("should detect episode with russian episode marker and single episode and with total episodes value", () => {
+        const releaseName = "Викинги / Vikings / Сезон: 5 / Серии: 1 из 20 [2017, WEB-DL 1080p] MVO";
+        expect(parse(releaseName)).to.deep.include({ episode: 1 });
+    });
 });
 

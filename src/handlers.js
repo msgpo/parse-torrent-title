@@ -68,7 +68,7 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("source", /\bBluRay\b/i, value("BluRay"), { remove: true });
     parser.addHandler("source", /\bWEB-?DL\b/i, value("WEB-DL"), { remove: true });
     parser.addHandler("source", /\bWEB-?Rip\b/i, value("WEBRip"), { remove: true });
-    parser.addHandler("source", /\b(?:DL|WEB|BD|BR)MUX\b/i, { remove: true });
+    parser.addHandler("source", /\b(?:DL|WEB|BD|BR)(?:RE)?MUX\b/i, { remove: true });
     parser.addHandler("source", /\b(DivX|XviD)\b/, { remove: true });
     parser.addHandler("source", /\bHDTV\b/i, value("HDTV"), { remove: true });
 
@@ -107,9 +107,10 @@ exports.addDefaults = /** @type Parser */ parser => {
 
     // Season
     parser.addHandler("seasons", /(?:complete\W|seasons?\W|\W|^)((?:s\d{1,2}[., +/\\&-]+)+s\d{1,2}\b)/i, range);
-    parser.addHandler("seasons", /(?:(?:\bthe\W)?\bcomplete\W)?\bseasons?\b[. -]?[([]?((?:\d{1,2}[., /\\&-]+)+\d{1,2}\b)[)\]]?/i, range);
+    parser.addHandler("seasons", /(?:complete\W|seasons?\W|\W|^)[([]?(s\d{1,2}-\d{1,2}\b)[)\]]?/i, range);
+    parser.addHandler("seasons", /(?:(?:\bthe\W)?\bcomplete\W)?(?:seasons?|[Сс]езони?)[. ]?[-:]?[. ]?[([]?((?:\d{1,2}[., /\\&-]+)+\d{1,2}\b)[)\]]?/i, range);
     parser.addHandler("seasons", /(?:(?:\bthe\W)?\bcomplete\W)?\bseasons?\b[. -]?(\d{1,2}[. -]?(?:to|thru|and|\+|:)[. -]?\d{1,2})\b/i, range);
-    parser.addHandler("seasons", /(?:(?:\bthe\W)?\bcomplete\W)?(?:saison|season)[. -]?(\d{1,2})/i, array(integer));
+    parser.addHandler("seasons", /(?:(?:\bthe\W)?\bcomplete\W)?(?:saison|season|[Сс]езон)[. ]?[-:]?[. ]?(\d{1,2})/i, array(integer));
     parser.addHandler("seasons", /(?:(?:\bthe\W)?\bcomplete)?(?:\W|^)s(\d{1,2})(?:[\Wex]|$)/i, array(integer), { skipIfAlreadyFound: false });
     parser.addHandler("seasons", /(?:\D|^)(\d{1,2})x\d{1,3}(?:\D|$)/, array(integer));
     parser.addHandler("seasons", /[[(](\d{1,2})\.\d{1,2}[)\]]/, array(integer));
@@ -125,11 +126,11 @@ exports.addDefaults = /** @type Parser */ parser => {
     // Episode
     parser.addHandler("episodes", /(?:[\W\d]|^)ep?[ .]?[([]?(\d{1,3}(?:[ .]?(?:[&+]|ep?){1,2}[ .]?\d{1,3})+)(?:\W|$)/i, range);
     parser.addHandler("episodes", /(?:[\W\d]|^)\d+x[ .]?[([]?(\d{1,3}(?:[ .]?[x][ .]?\d{1,3})+)(?:\W|$)/i, range);
-    parser.addHandler("episodes", /(?:[\W\d]|^)episodes?[ .]?[([]?(\d{1,3}(?:[ .+]*[&+][ .]?\d{1,3})+)(?:\W|$)/i, range);
-    parser.addHandler("episodes", /(?:[\W\d]|^)(?:e|ep|episodes?|\d+x)[ .]?[([]?(\d{1,3}(?:-?\d{1,3})+)(?:\W|$)/i, range);
+    parser.addHandler("episodes", /(?:[\W\d]|^)(?:episodes?|[Сс]ерии:?)[ .]?[([]?(\d{1,3}(?:[ .+]*[&+][ .]?\d{1,3})+)(?:\W|$)/i, range);
+    parser.addHandler("episodes", /(?:[\W\d]|^)(?:e|ep|episodes?|[Сс]ерии:?|\d+x)[ .]?[([]?(\d{1,3}(?:-?\d{1,3})+)(?:\W|$)/i, range);
     parser.addHandler("episodes", /(?:\W|^)s\d{1,2}[. ]?[x-]?[. ]?(?:e|x|ep|-)[. ]?(\d{1,3})(?:\W|$)/i, array(integer));
-    parser.addHandler("episodes", /(?<!seasons?\W*)(?:[ .([-]|^)(\d{1,3}(?:[ .]?[,&+-][ .]?\d{1,3})+)(?:[ .)\]-]|$)/i, range);
-    parser.addHandler("episodes", /[ée]p(?:isode)?[. -]?(\d{1,3})(?:\W|$)/i, array(integer));
+    parser.addHandler("episodes", /(?<!(?:seasons?|[Сс]езони?)\W*)(?:[ .([-]|^)(\d{1,3}(?:[ .]?[,&+-][ .]?\d{1,3})+)(?:[ .)\]-]|$)/i, range);
+    parser.addHandler("episodes", /(?:[ée]p(?:isode)?|[Сс]ерии)[. ]?[-:]?[. ]?(\d{1,3})(?:\W|$)/i, array(integer));
     parser.addHandler("episodes", /(?:\W|^)\d{1,2}[. ]?x[. ]?(\d{1,2})(?:\W|$)/, array(integer));
     parser.addHandler("episodes", /[[(]\d{1,2}\.(\d{1,2})[)\]]/, array(integer));
     parser.addHandler("episodes", /-\s?\d{1,2}\.(\d{1,2})\s?-/, array(integer));

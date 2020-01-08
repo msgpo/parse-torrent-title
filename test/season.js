@@ -172,14 +172,34 @@ describe("Parsing season", () => {
         expect(parse(releaseName)).to.deep.include({ seasons: [1, 2, 3, 4, 5, 6, 7] });
     });
 
-    it("should season with a dot and hyphen separator", () => {
+    it("should detect season with a dot and hyphen separator", () => {
         const releaseName = "My Little Pony FiM - 6.01 - No Second Prances.mkv";
         expect(parse(releaseName)).to.deep.include({ season: 6 });
     });
 
-    it("should season with a year range afterwards", () => {
+    it("should detect season with a year range afterwards", () => {
         const releaseName = "Empty Nest Season 1 (1988 - 89) fiveofseven";
         expect(parse(releaseName)).to.deep.include({ season: 1 });
+    });
+
+    it("should detect multiple seasons with russian season and hyphen separator", () => {
+        const releaseName = "Game of Thrones / Сезон: 1-8 / Серии: 1-73 из 73 [2011-2019, США, BDRip 1080p] MVO (LostFilm)";
+        expect(parse(releaseName)).to.deep.include({ seasons: [1, 2, 3, 4, 5, 6, 7, 8] });
+    });
+
+    it("should detect multiple seasons with russian season and comma separator", () => {
+        const releaseName = "Друзья / Friends / Сезон: 1, 2 / Серии: 1-24 из 24 [1994-1999, США, BDRip 720p] MVO";
+        expect(parse(releaseName)).to.deep.include({ seasons: [1, 2] });
+    });
+
+    it("should detect season with russian season word", () => {
+        const releaseName = "Друзья / Friends / Сезон: 1 / Серии: 1-24 из 24 [1994-1995, США, BDRip 720p] MVO + Original + Sub (Rus, Eng)";
+        expect(parse(releaseName)).to.deep.include({ season: 1 });
+    });
+
+    it("should detect multiple seasons with end season without s symbol", () => {
+        const releaseName = "Once Upon a Time [S01-07] (2011-2017) WEB-DLRip by Generalfilm";
+        expect(parse(releaseName)).to.deep.include({ seasons: [1, 2, 3, 4, 5, 6, 7] });
     });
 });
 

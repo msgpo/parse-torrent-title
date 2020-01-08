@@ -225,4 +225,29 @@ describe("Random releases", () => {
             audio: "aac",
         });
     });
+
+    it("[GM-Team][国漫][西行纪之集结篇][The Westward Ⅱ][2019][17][AVC][GB][1080P]", () => {
+        const releaseName = "[GM-Team][国漫][西行纪之集结篇][The Westward Ⅱ][2019][17][AVC][GB][1080P]";
+        expect(parse(releaseName)).to.deep.equal({
+            title: "The Westward Ⅱ",
+            year: 2019,
+            episodes: [17],
+            episode: 17,
+            resolution: "1080p",
+            codec: "avc"
+        });
+    });
+
+    it("Черное зеркало / Black Mirror / Сезон 4 / Серии 1-6 (6) [2017, США, WEBRip 1080p] MVO + Eng Sub", () => {
+        const releaseName = "Черное зеркало / Black Mirror / Сезон 4 / Серии 1-6 (6) [2017, США, WEBRip 1080p] MVO + Eng Sub";
+        expect(parse(releaseName)).to.deep.equal({
+            title: "Black Mirror",
+            year: 2017,
+            seasons: [4],
+            season: 4,
+            episodes: [1, 2, 3, 4, 5, 6],
+            resolution: "1080p",
+            source: "WEBRip",
+        });
+    });
 });

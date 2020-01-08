@@ -41,6 +41,11 @@ describe("Parsing title", () => {
         expect(parse(releaseName)).to.deep.include({ title: "Eizouken ni wa Te wo Dasu na!" });
     });
 
+    it("should remove japanese alt titles when the main one is in the middle", () => {
+        const releaseName = "【喵萌奶茶屋】★01月新番★[別對映像研出手！/Eizouken ni wa Te wo Dasu na!/映像研には手を出すな！][01][1080p][繁體]";
+        expect(parse(releaseName)).to.deep.include({ title: "Eizouken ni wa Te wo Dasu na!" });
+    });
+
     it("should remove japanese alt titles without separators", () => {
         const releaseName = "[Seed-Raws] 劇場版 ペンギン・ハイウェイ Penguin Highway The Movie (BD 1280x720 AVC AACx4 [5.1+2.0+2.0+2.0]).mp4";
         expect(parse(releaseName)).to.deep.include({ title: "Penguin Highway The Movie" });
