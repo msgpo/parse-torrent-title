@@ -65,4 +65,9 @@ describe("Parsing title", () => {
         const releaseName = "Жихарка (2007) DVDRip";
         expect(parse(releaseName)).to.deep.include({ title: "Жихарка" });
     });
+
+    it("should clear russian cast info from title", () => {
+        const releaseName = "Американские животные / American Animals (Барт Лэйтон / Bart Layton) [2018, Великобритания, США, драма, криминал, BDRip] MVO (СВ Студия)";
+        expect(parse(releaseName)).to.deep.include({ title: "American Animals" });
+    });
 });
