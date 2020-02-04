@@ -233,6 +233,11 @@ describe("Parsing episode", () => {
         expect(parse(releaseName)).to.deep.include({ episode: 9 });
     });
 
+    it("should detect episode with number and a hyphen after it in a title", () => {
+        const releaseName = "3-Nen D-Gumi Glass no Kamen - 13 [480p]";
+        expect(parse(releaseName)).to.deep.include({ episode: 13 });
+    });
+
     it("should detect episode with of separator", () => {
         const releaseName = "BBC Indian Ocean with Simon Reeve 5of6 Sri Lanka to Bangladesh.avi";
         expect(parse(releaseName)).to.deep.include({ episode: 5 });

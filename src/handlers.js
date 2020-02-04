@@ -145,12 +145,15 @@ exports.addDefaults = /** @type Parser */ parser => {
                 .filter(index => index > 0);
             const startIndex = matched.year && matched.year.matchIndex || 0;
             const endIndex = Math.min(...indexes, title.length);
-            const match = title.substring(startIndex, endIndex).match(/(?:[ .]?[([-]|^)[ .]?(\d{1,3})(?:a|b|v\d)?(?:\W|$)/);
-            if (match) {
-                result.episodes = [match[1]]
+            const partTitle = title.substring(startIndex, endIndex);
+            // try to match the episode inside the title with a separator, if not found include the start of the title as well
+            const matches = partTitle.match(/[ .]?[([\-][ .]?(\d{1,3})(?:a|b|v\d)?(?:\W|$)/)
+                || partTitle.match(/^[ .]?(\d{1,3})(?:a|b|v\d)?(?:\W|$)/) ;
+            if (matches) {
+                result.episodes = [matches[matches.length - 1]]
                     .map(group => group.replace(/\D/g, ""))
                     .map(group => parseInt(group, 10));
-                return { matchIndex: match.index }
+                return { matchIndex: matches.index }
             }
         }
     });
