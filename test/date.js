@@ -11,5 +11,10 @@ describe("Parsing date", () => {
         const releaseName = "Stephen Colbert 2019 10 25 Eddie Murphy 480p x264-mSD [eztv]";
         expect(parse(releaseName)).to.deep.include({ date: "2019-10-25" });
     });
+
+    it("Jimmy.Fallon.2020.02.14.Steve.Buscemi.WEB.x264-XLF[TGx]", () => {
+        const releaseName = "Jimmy.Fallon.2020.02.14.Steve.Buscemi.WEB.x264-XLF[TGx]";
+        expect(parse(releaseName)).to.deep.include({ date: "2020-02-14" });
+    });
 });
 

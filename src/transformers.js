@@ -9,7 +9,7 @@ exports.boolean = () => true;
 exports.lowercase = input => input.toLowerCase();
 
 exports.date = input => {
-    const parts = input.replace(/\D+/, " ").trim().split(" ");
+    const parts = input.replace(/\D+/g, " ").trim().split(" ");
     const year = parts[0].length === 4 ? parts[0] : parts[2];
     const month = parts[1];
     const day = parts[0].length === 2 ? parts[0] : parts[2];
