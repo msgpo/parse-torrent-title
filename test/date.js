@@ -16,5 +16,10 @@ describe("Parsing date", () => {
         const releaseName = "Jimmy.Fallon.2020.02.14.Steve.Buscemi.WEB.x264-XLF[TGx]";
         expect(parse(releaseName)).to.deep.include({ date: "2020-02-14" });
     });
+
+    it("The Young And The Restless - S43 E10986 - 2016-08-12", () => {
+        const releaseName = "The Young And The Restless - S43 E10986 - 2016-08-12";
+        expect(parse(releaseName)).to.deep.include({ date: "2016-08-12" });
+    });
 });
 

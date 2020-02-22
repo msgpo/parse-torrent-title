@@ -3,8 +3,8 @@ const { value, integer, boolean, lowercase, date, range, yearRange, array } = re
 exports.addDefaults = /** @type Parser */ parser => {
 
     // Year
-    parser.addHandler("date", /(?<=\W)([([]?(?:19[7-9]|20[012])[0-9][. -/\\](?:0[1-9]|1[012])[. -/\\](?:0[1-9]|[12][0-9]|3[01])[)\]]?)(?=\W)/, date, { remove: true });
-    parser.addHandler("date", /(?<=\W)([([]?(?:0[1-9]|[12][0-9]|3[01])[. -/\\](?:0[1-9]|1[012])[. -/\\](?:19[7-9]|20[012])[0-9][)\]]?)(?=\W)/, date, { remove: true });
+    parser.addHandler("date", /(?<=\W)([([]?(?:19[7-9]|20[012])[0-9][. -/\\](?:0[1-9]|1[012])[. -/\\](?:0[1-9]|[12][0-9]|3[01])[)\]]?)(?=\W|$)/, date, { remove: true });
+    parser.addHandler("date", /(?<=\W)([([]?(?:0[1-9]|[12][0-9]|3[01])[. -/\\](?:0[1-9]|1[012])[. -/\\](?:19[7-9]|20[012])[0-9][)\]]?)(?=\W|$)/, date, { remove: true });
 
     // Year
     parser.addHandler("year", /[([]?[ .]?((?:19[0-9]|20[012])[0-9][ .]?-[ .]?(?:19[0-9]|20[012])[0-9])[ .]?[)\]]?/, yearRange, { remove: true });
