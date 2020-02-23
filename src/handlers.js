@@ -2,6 +2,15 @@ const { value, integer, boolean, lowercase, date, range, yearRange, array } = re
 
 exports.addDefaults = /** @type Parser */ parser => {
 
+    // Resolution
+    parser.addHandler("resolution", /[([]?1920x1080[)\]]?/i, value('1080p'), { remove: true });
+    parser.addHandler("resolution", /[([]?(?:1280|960)x720[)\]]?/i, value('720p'), { remove: true });
+    parser.addHandler("resolution", /[([]?640x480[)\]]?/i, value('480p'), { remove: true });
+    parser.addHandler("resolution", /[([]?(\d{3,4}x\d{3,4})[)\]]?/i, lowercase, { remove: true });
+    parser.addHandler("resolution", /\b[([]?4k[)\]]?\b/i, value('4k'), { remove: true });
+    parser.addHandler("resolution", /(2160[pi])/i, value('4k'), { skipIfAlreadyFound: false, remove: true });
+    parser.addHandler("resolution", /([0-9]{3,4}[pi])/i, lowercase, { remove: true });
+
     // Year
     parser.addHandler("date", /(?<=\W|^)([([]?(?:19[7-9]|20[012])[0-9][. -/\\](?:0[1-9]|1[012])[. -/\\](?:0[1-9]|[12][0-9]|3[01])[)\]]?)(?=\W|$)/, date, { remove: true });
     parser.addHandler("date", /(?<=\W|^)([([]?(?:0[1-9]|[12][0-9]|3[01])[. -/\\](?:0[1-9]|1[012])[. -/\\](?:19[7-9]|20[012])[0-9][)\]]?)(?=\W|$)/, date, { remove: true });
@@ -11,14 +20,6 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("year", /[([][ .]?((?:19[0-9]|20[012])[0-9][ .]?-[ .]?(?:[0-9]{2}))[ .]?[)\]]/, yearRange, { remove: true });
     parser.addHandler("year", /(?!^)[([]?((?:19[0-9]|20[012])[0-9])[)\]]?/, integer, { remove: true });
     parser.addHandler("year", /[([]?((?:19[0-9]|20[012])[0-9])[)\]]?/, integer, { remove: true });
-
-    // Resolution
-    parser.addHandler("resolution", /[([]?1920x1080[)\]]?/i, value('1080p'), { remove: true });
-    parser.addHandler("resolution", /[([]?(?:1280|960)x720[)\]]?/i, value('720p'), { remove: true });
-    parser.addHandler("resolution", /[([]?640x480[)\]]?/i, value('480p'), { remove: true });
-    parser.addHandler("resolution", /[([]?(\d{3,4}x\d{3,4})[)\]]?/i, lowercase, { remove: true });
-    parser.addHandler("resolution", /[([]?4k[)\]]?/i, value('4k'), { remove: true });
-    parser.addHandler("resolution", /([0-9]{3,4}[pi])/i, lowercase, { remove: true });
 
     // Extended
     parser.addHandler("extended", /EXTENDED/, boolean);
@@ -50,7 +51,10 @@ exports.addDefaults = /** @type Parser */ parser => {
     // Source
     parser.addHandler("source", /\b(?:HD-?)?CAM\b/, { remove: true });
     parser.addHandler("source", /\b(?:HD-?)?T(?:ELE)?S(?:YNC)?\b/i, { remove: true });
-    parser.addHandler("source", /\bHD-?Rip\b/i, { remove: true });
+    parser.addHandler("source", /\bUltraHD\b/i, value("UHDRip"), { remove: true });
+    parser.addHandler("source", /\bUHD-?(?:Rip)?\b/i, value("UHDRip"), { remove: true });
+    parser.addHandler("source", /\bHD-?Rip\b/i, value("HDRip"), { remove: true });
+    parser.addHandler("source", /\bHDR\b/i, value("HDRip"), { remove: true });
     parser.addHandler("source", /\bBRRip\b/i, value("BRRip"), { remove: true });
     parser.addHandler("source", /\bBDRip\b|\bBD-RM\b|[[(]BD[\]) .,-]/i, value("BDRip"), { remove: true });
     parser.addHandler("source", /\bDVDRip\b/i, value("DVDRip"), { remove: true });
@@ -62,12 +66,15 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("source", /\bTVRips?\b/i, value("TVRip"), { remove: true });
     parser.addHandler("source", /\bR5\b/i, value("R5"), { remove: true });
     parser.addHandler("source", /\bVHSScr\b/i, value("VHSScr"), { remove: true });
-    parser.addHandler("source", /\bBluRay\b/i, value("BluRay"), { remove: true });
+    parser.addHandler("source", /\bBlu-?Ray\b/i, value("BluRay"), { remove: true });
     parser.addHandler("source", /\bWEB-?DL\b/i, value("WEB-DL"), { remove: true });
     parser.addHandler("source", /\bWEB-?Rip\b/i, value("WEBRip"), { remove: true });
     parser.addHandler("source", /\b(?:DL|WEB|BD|BR)(?:RE)?MUX\b/i, { remove: true });
     parser.addHandler("source", /\b(DivX|XviD)\b/, { remove: true });
     parser.addHandler("source", /\bHDTV\b/i, value("HDTV"), { remove: true });
+
+    // Video depth
+    parser.addHandler("bitDepth", /(?:8|10|12)-?bit/i, lowercase, { remove: true });
 
     // Codec
     parser.addHandler("codec", /[xh][-. ]?26[45]/i, lowercase, { remove: true });
@@ -129,7 +136,8 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("episodes", /(?:[\W\d]|^)(?:episodes?|[Сс]ерии:?)[ .]?[([]?(\d{1,3}(?:[ .+]*[&+][ .]?\d{1,3})+)(?:\W|$)/i, range);
     parser.addHandler("episodes", /(?:[\W\d]|^)(?:e|ep|episodes?|[Сс]ерии:?|\d+x)[ .]?[([]?(\d{1,3}(?:-?\d{1,3})+)(?:\W|$)/i, range);
     parser.addHandler("episodes", /(?:\W|^)s\d{1,2}[. ]?[x-]?[. ]?(?:e|x|ep|-)[. ]?(\d{1,3})(?:\W|$)/i, array(integer));
-    parser.addHandler("episodes", /(?<!(?:seasons?|[Сс]езони?)\W*)(?:[ .([-]|^)(\d{1,3}(?:[ .]?[,&+-][ .]?\d{1,3})+)(?:[ .)\]-]|$)/i, range);
+    parser.addHandler("episodes", /(?<!(?:seasons?|[Сс]езони?)\W*)(?:[ .([-]|^)(\d{1,3}(?:[ .]?[,&+][ .]?\d{1,3})+)(?:[ .)\]-]|$)/i, range);
+    parser.addHandler("episodes", /(?<!(?:seasons?|[Сс]езони?)\W*)(?:[ .([-]|^)(\d{1,3}(?:-\d{1,3})+)(?:[ .)\]-]|$)/i, range);
     parser.addHandler("episodes", /(?:[ée]p(?:isode)?|[Сс]ерии)[. ]?[-:]?[. ]?(\d{1,3})(?:\W|$)/i, array(integer));
     parser.addHandler("episodes", /(?:\W|^)\d{1,2}[. ]?x[. ]?(\d{1,2})(?:\W|$)/, array(integer));
     parser.addHandler("episodes", /[[(]\d{1,2}\.(\d{1,2})[)\]]/, array(integer));

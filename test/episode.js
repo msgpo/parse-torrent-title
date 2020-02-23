@@ -52,6 +52,16 @@ describe("Parsing episode", () => {
         expect(parse(releaseName)).to.deep.include({ season: 7, episodes: [23, 24] });
     });
 
+    it("should detect multiple episodes with hyphen no spaces separator", () => {
+        const releaseName = "611-612 - Desperate Measures, Means & Ends.mp4";
+        expect(parse(releaseName)).to.deep.include({ episodes: [611, 612] });
+    });
+
+    it("should detect multiple single episode with 10-bit notation in it", () => {
+        const releaseName = "[Final8]Suisei no Gargantia - 05 (BD 10-bit 1920x1080 x264 FLAC)[E0B15ACF].mkv";
+        expect(parse(releaseName)).to.deep.include({ episode: 5 });
+    });
+
     it("should detect multiple episodes with episodes prefix and hyphen separator", () => {
         const releaseName = "Orange Is The New Black Season 5 Episodes 1-10 INCOMPLETE (LEAKED)";
         expect(parse(releaseName)).to.deep.include({ episodes: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] });
@@ -246,6 +256,11 @@ describe("Parsing episode", () => {
     it("should detect multiple episodes with E sign and no separator", () => {
         const releaseName = "Stargate Universe S01E01E02E03.mp4";
         expect(parse(releaseName)).to.deep.include({ episodes: [1, 2, 3] });
+    });
+
+    it("should detect episode with single episode and not range", () => {
+        const releaseName = "[HorribleSubs] White Album 2 - 06 [1080p].mkv";
+        expect(parse(releaseName)).to.deep.include({ episode: 6 });
     });
 
     it("should detect episode with E symbols without season", () => {

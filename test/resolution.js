@@ -26,6 +26,12 @@ describe("Parsing resolution", () => {
         expect(parse(releaseName)).to.deep.include({ resolution: "4k" });
     });
 
+    it("should detect the 2160p as 4k", () => {
+        const releaseName = "Joker.2019.2160p.4K.BluRay.x265.10bit.HDR.AAC5.1";
+
+        expect(parse(releaseName)).to.deep.include({ resolution: "4k" });
+    });
+
     it("should detect custom resolution correctly", () => {
         const releaseName = "[JacobSwaggedUp] Kizumonogatari I: Tekketsu-hen (BD 1280x544) [MP4 Movie]";
         expect(parse(releaseName)).to.deep.include({ resolution: "1280x544" });

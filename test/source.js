@@ -56,5 +56,25 @@ describe("Parsing source", () => {
         const releaseName = "[UsifRenegade] Cardcaptor Sakura - 54 [BD-RM][1080p][x265_10Bit][Dual_AAC].mkv";
         expect(parse(releaseName)).to.deep.include({ source: "BDRip" });
     });
+
+    it("should detect the UHDrip source correctly", () => {
+        const releaseName = "Bohemian Rhapsody 2018.2160p.UHDrip.x265.HDR.DD+.5.1-DTOne";
+        expect(parse(releaseName)).to.deep.include({ source: "UHDRip" });
+    });
+
+    it("should detect the UltraHD source correctly", () => {
+        const releaseName = "Blade.Runner.2049.2017.4K.UltraHD.BluRay.2160p.x264.TrueHD.Atmos";
+        expect(parse(releaseName)).to.deep.include({ source: "UHDRip" });
+    });
+
+    it("should detect the UHD source correctly", () => {
+        const releaseName = "Terminator.Dark.Fate.2019.2160p.UHD.BluRay.X265.10bit.HDR.TrueHD";
+        expect(parse(releaseName)).to.deep.include({ source: "UHDRip" });
+    });
+
+    it("should detect the HDR source correctly", () => {
+        const releaseName = "The.Mandalorian.S01E06.4K.HDR.2160p 4.42GB";
+        expect(parse(releaseName)).to.deep.include({ source: "HDRip" });
+    });
 });
 
