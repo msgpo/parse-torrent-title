@@ -3,8 +3,8 @@ const { value, integer, boolean, lowercase, date, range, yearRange, array } = re
 exports.addDefaults = /** @type Parser */ parser => {
 
     // Year
-    parser.addHandler("date", /(?<=\W)([([]?(?:19[7-9]|20[012])[0-9][. -/\\](?:0[1-9]|1[012])[. -/\\](?:0[1-9]|[12][0-9]|3[01])[)\]]?)(?=\W|$)/, date, { remove: true });
-    parser.addHandler("date", /(?<=\W)([([]?(?:0[1-9]|[12][0-9]|3[01])[. -/\\](?:0[1-9]|1[012])[. -/\\](?:19[7-9]|20[012])[0-9][)\]]?)(?=\W|$)/, date, { remove: true });
+    parser.addHandler("date", /(?<=\W|^)([([]?(?:19[7-9]|20[012])[0-9][. -/\\](?:0[1-9]|1[012])[. -/\\](?:0[1-9]|[12][0-9]|3[01])[)\]]?)(?=\W|$)/, date, { remove: true });
+    parser.addHandler("date", /(?<=\W|^)([([]?(?:0[1-9]|[12][0-9]|3[01])[. -/\\](?:0[1-9]|1[012])[. -/\\](?:19[7-9]|20[012])[0-9][)\]]?)(?=\W|$)/, date, { remove: true });
 
     // Year
     parser.addHandler("year", /[([]?[ .]?((?:19[0-9]|20[012])[0-9][ .]?-[ .]?(?:19[0-9]|20[012])[0-9])[ .]?[)\]]?/, yearRange, { remove: true });
@@ -47,9 +47,6 @@ exports.addDefaults = /** @type Parser */ parser => {
     // Region
     parser.addHandler("region", /R[0-9]/);
 
-    // Container
-    parser.addHandler("container", /(?:\.)?[[(]?\b(MKV|AVI|MP4|WMV|MPG|MPEG)\b[\])]?/i, lowercase, { remove: true });
-
     // Source
     parser.addHandler("source", /\b(?:HD-?)?CAM\b/, { remove: true });
     parser.addHandler("source", /\b(?:HD-?)?T(?:ELE)?S(?:YNC)?\b/i, { remove: true });
@@ -90,7 +87,10 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("audio", /AAC(?:[. ]?2[. ]0)?/, value("aac"), { remove: true });
 
     // Group
-    parser.addHandler("group", /- ?([^\-. ]+)$/, { remove: true });
+    parser.addHandler("group", /- ?(?!\d+$|S\d+|\d+x|ep?\d+)([^\-. ]+)$/i, { remove: true });
+
+    // Container
+    parser.addHandler("container", /(?:\.)?[[(]?\b(MKV|AVI|MP4|WMV|MPG|MPEG)\b[\])]?/i, lowercase, { remove: true });
 
     // Volumes
     parser.addHandler("volumes", /vol(?:s|umes?)?[. -]*(?:\d{1,2}[., +/\\&-]+)+\d{1,2}\b/i, range, { remove: true });

@@ -25,4 +25,28 @@ describe("Parsing group", () => {
 
         expect(parse(releaseName)).to.not.have.property("group");
     });
+
+    it("should detect when there is no group with hyphen separator", () => {
+        const releaseName = "Power (2014) - S02E03.mp4";
+
+        expect(parse(releaseName)).to.not.have.property("group");
+    });
+
+    it("should detect when there is no group with hyphen separator and no container", () => {
+        const releaseName = "Power (2014) - S02E03";
+
+        expect(parse(releaseName)).to.not.have.property("group");
+    });
+
+    it("should detect when there is no group when it is episode", () => {
+        const releaseName = "3-Nen D-Gumi Glass no Kamen - 13";
+
+        expect(parse(releaseName)).to.not.have.property("group");
+    });
+
+    it("should detect when there is no group when it is ep symbol", () => {
+        const releaseName = "3-Nen D-Gumi Glass no Kamen - Ep13";
+
+        expect(parse(releaseName)).to.not.have.property("group");
+    });
 });
