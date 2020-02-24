@@ -3,17 +3,20 @@ const { value, integer, boolean, lowercase, date, range, yearRange, array } = re
 exports.addDefaults = /** @type Parser */ parser => {
 
     // Resolution
-    parser.addHandler("resolution", /[([]?1920x1080[)\]]?/i, value('1080p'), { remove: true });
-    parser.addHandler("resolution", /[([]?(?:1280|960)x720[)\]]?/i, value('720p'), { remove: true });
-    parser.addHandler("resolution", /[([]?640x480[)\]]?/i, value('480p'), { remove: true });
+    parser.addHandler("resolution", /[([]?1920x1080[)\]]?/i, value("1080p"), { remove: true });
+    parser.addHandler("resolution", /[([]?(?:1280|960)x720[)\]]?/i, value("720p"), { remove: true });
+    parser.addHandler("resolution", /[([]?640x480[)\]]?/i, value("480p"), { remove: true });
     parser.addHandler("resolution", /[([]?(\d{3,4}x\d{3,4})[)\]]?/i, lowercase, { remove: true });
-    parser.addHandler("resolution", /\b[([]?4k[)\]]?\b/i, value('4k'), { remove: true });
-    parser.addHandler("resolution", /(2160[pi])/i, value('4k'), { skipIfAlreadyFound: false, remove: true });
+    parser.addHandler("resolution", /\b[([]?4k[)\]]?\b/i, value("4k"), { remove: true });
+    parser.addHandler("resolution", /(2160[pi])/i, value("4k"), { skipIfAlreadyFound: false, remove: true });
     parser.addHandler("resolution", /([0-9]{3,4}[pi])/i, lowercase, { remove: true });
 
     // Year
-    parser.addHandler("date", /(?<=\W|^)([([]?(?:19[7-9]|20[012])[0-9][. -/\\](?:0[1-9]|1[012])[. -/\\](?:0[1-9]|[12][0-9]|3[01])[)\]]?)(?=\W|$)/, date, { remove: true });
-    parser.addHandler("date", /(?<=\W|^)([([]?(?:0[1-9]|[12][0-9]|3[01])[. -/\\](?:0[1-9]|1[012])[. -/\\](?:19[7-9]|20[012])[0-9][)\]]?)(?=\W|$)/, date, { remove: true });
+    parser.addHandler("date", /(?<=\W|^)([([]?(?:19[6-9]|20[012])[0-9][. -/\\](?:0[1-9]|1[012])[. -/\\](?:0[1-9]|[12][0-9]|3[01])[)\]]?)(?=\W|$)/, date("YYYY MM DD"), { remove: true });
+    parser.addHandler("date", /(?<=\W|^)([([]?(?:0[1-9]|[12][0-9]|3[01])[. -/\\](?:0[1-9]|1[012])[. -/\\](?:19[6-9]|20[012])[0-9][)\]]?)(?=\W|$)/, date("DD MM YYYY"), { remove: true });
+    parser.addHandler("date", /(?<=\W|^)([([]?(?:0[1-9]|1[012])[. -/\\](?:0[1-9]|[12][0-9]|3[01])[. -/\\](?:[0][1-9]|[0126789][0-9])[)\]]?)(?=\W|$)/, date("MM DD YY"), { remove: true });
+    parser.addHandler("date", /(?<=\W|^)([([]?(?:0?[1-9]|[12][0-9]|3[01])[. -/\\](?:feb|jan|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[. -/\\](?:19[7-9]|20[012])[0-9][)\]]?)(?=\W|$)/i, date("DD MMM YYYY"), { remove: true });
+    parser.addHandler("date", /(?<=\W|^)([([]?(?:0?[1-9]|[12][0-9]|3[01])[. -/\\](?:feb|jan|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[. -/\\](?:[0][1-9]|[0126789][0-9])[)\]]?)(?=\W|$)/i, date("DD MMM YY"), { remove: true });
 
     // Year
     parser.addHandler("year", /[([]?[ .]?((?:19[0-9]|20[012])[0-9][ .]?-[ .]?(?:19[0-9]|20[012])[0-9])[ .]?[)\]]?/, yearRange, { remove: true });
@@ -103,7 +106,8 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("volumes", /vol(?:s|umes?)?[. -]*(?:\d{1,2}[., +/\\&-]+)+\d{1,2}\b/i, range, { remove: true });
     parser.addHandler("volumes", ({ title, result, matched }) => {
         const startIndex = matched.year && matched.year.matchIndex || 0;
-        const match = title.substring(startIndex).match(/vol(?:ume)?[. -]*(\d{1,2})/i);
+        const match = title.slice(startIndex).match(/vol(?:ume)?[. -]*(\d{1,2})/i);
+
         if (match) {
             matched.volumes = { match: match[0], matchIndex: match.index };
             result.volumes = array(integer)(match[1]);
@@ -123,7 +127,7 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("seasons", /[[(](\d{1,2})\.\d{1,2}[)\]]/, array(integer));
     parser.addHandler("seasons", /-\s?(\d{1,2})\.\d{1,2}\s?-/, array(integer));
 
-    // adds single season info if its there's only single season
+    // adds single season info if its there"s only single season
     parser.addHandler("season", ({ result }) => {
         if (result.seasons && result.seasons.length === 1) {
             result.season = result.seasons[0];
@@ -153,15 +157,17 @@ exports.addDefaults = /** @type Parser */ parser => {
                 .filter(index => index > 0);
             const startIndex = matched.year && matched.year.matchIndex || 0;
             const endIndex = Math.min(...indexes, title.length);
-            const partTitle = title.substring(startIndex, endIndex);
+            const partTitle = title.slice(startIndex, endIndex);
+
             // try to match the episode inside the title with a separator, if not found include the start of the title as well
-            const matches = partTitle.match(/[ .]?[([\-][ .]?(\d{1,3})(?:a|b|v\d)?(?:\W|$)/)
-                || partTitle.match(/^[ .]?(\d{1,3})(?:a|b|v\d)?(?:\W|$)/) ;
+            const matches = partTitle.match(/[ .]?[([-][ .]?(\d{1,3})(?:a|b|v\d)?(?:\W|$)/) ||
+                partTitle.match(/^[ .]?(\d{1,3})(?:a|b|v\d)?(?:\W|$)/);
+
             if (matches) {
                 result.episodes = [matches[matches.length - 1]]
                     .map(group => group.replace(/\D/g, ""))
                     .map(group => parseInt(group, 10));
-                return { matchIndex: matches.index }
+                return { matchIndex: matches.index };
             }
         }
     });

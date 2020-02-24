@@ -23,9 +23,12 @@
   "author": "Clément Escolano <clement.escolano@icloud.com>",
   "license": "MIT",
   "engines": {
-    "node": ">=8"
+    "node": ">=10"
   },
   "types": "index.d.ts",
+  "dependencies": {
+    "moment": "^2.24.0"
+  },
   "devDependencies": {
     "chai": "^4.2.0",
     "eslint": "^6.0.0",
