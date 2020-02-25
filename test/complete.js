@@ -52,6 +52,26 @@ describe("Parsing complete collection", () => {
         expect(parse(releaseName)).to.deep.include({ complete: true });
     });
 
+    it("should detect complete movie collection", () => {
+        const releaseName = "The Clint Eastwood Movie Collection";
+        expect(parse(releaseName)).to.deep.include({ complete: true });
+    });
+
+    it("should detect complete collection movies", () => {
+        const releaseName = "Clint Eastwood Collection - 15 HD Movies";
+        expect(parse(releaseName)).to.deep.include({ complete: true });
+    });
+
+    it("should detect complete movies collection", () => {
+        const releaseName = "Official  IMDb  Top  250  Movies  Collection  6/17/2011";
+        expect(parse(releaseName)).to.deep.include({ complete: true });
+    });
+
+    it("should detect collection", () => {
+        const releaseName = "The Texas Chainsaw Massacre Collection (1974-2017) BDRip 1080p";
+        expect(parse(releaseName)).to.deep.include({ complete: true });
+    });
+
     it("should detect duology", () => {
         const releaseName = "Snabba.Cash.I-II.Duology.2010-2012.1080p.BluRay.x264.anoXmous";
         expect(parse(releaseName)).to.deep.include({ complete: true });
