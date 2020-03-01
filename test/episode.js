@@ -72,6 +72,11 @@ describe("Parsing episode", () => {
         expect(parse(releaseName)).to.deep.include({ episodes: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] });
     });
 
+    it("should detect multiple episodes with hyphen separator and follower by open parenthesis", () => {
+        const releaseName = "[TBox] Dragon Ball Z Full 1-291(Subbed Jap Vers)";
+        expect(parse(releaseName)).to.deep.include({ episodes: [...Array(291).keys()].map(i => i + 1) });
+    });
+
     it("should detect multiple episodes with e prefix and hyphen separator", () => {
         const releaseName = "Marvel's.Agents.of.S.H.I.E.L.D.S02E01-03.Shadows.1080p.WEB-DL.DD5.1";
         expect(parse(releaseName)).to.deep.include({ episodes: [1, 2, 3] });
