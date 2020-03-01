@@ -187,8 +187,18 @@ describe("Parsing episode", () => {
         expect(parse(releaseName)).to.not.have.property("episodes");
     });
 
-    it("should detect detect episodes when the range is for seasons", () => {
+    it("should not detect episodes when the range is for seasons", () => {
         const releaseName = "House MD All Seasons (1-8) 720p Ultra-Compressed";
+        expect(parse(releaseName)).to.not.have.property("episodes");
+    });
+
+    it("should not detect episode when it indicates sequence of the movie in between hyhen separators", () => {
+        const releaseName = "Dragon Ball Z Movie - 09 - Bojack Unbound - 1080p";
+        expect(parse(releaseName)).to.not.have.property("episodes");
+    });
+
+    it("should not detect episode when it indicates sequence of the movie at the start", () => {
+        const releaseName = "09 Movie - Dragon Ball Z - Bojack Unbound";
         expect(parse(releaseName)).to.not.have.property("episodes");
     });
 
