@@ -201,5 +201,24 @@ describe("Parsing season", () => {
         const releaseName = "Once Upon a Time [S01-07] (2011-2017) WEB-DLRip by Generalfilm";
         expect(parse(releaseName)).to.deep.include({ seasons: [1, 2, 3, 4, 5, 6, 7] });
     });
-});
 
+    it("Ace of the Diamond: 1st Season", () => {
+        const releaseName = "Ace of the Diamond: 1st Season";
+        expect(parse(releaseName)).to.deep.include({ seasons: [1] });
+    });
+
+    it("Ace of the Diamond: 2nd Season", () => {
+        const releaseName = "Ace of the Diamond: 2nd Season";
+        expect(parse(releaseName)).to.deep.include({ seasons: [2] });
+    });
+
+    it("Adventure Time 10 th season", () => {
+        const releaseName = "Adventure Time 10 th season";
+        expect(parse(releaseName)).to.deep.include({ seasons: [10] });
+    });
+
+    it("Kyoukai no Rinne (TV) 3rd Season - 23 [1080p]", () => {
+        const releaseName = "Kyoukai no Rinne (TV) 3rd Season - 23 [1080p]";
+        expect(parse(releaseName)).to.deep.include({ seasons: [3] });
+    });
+});
