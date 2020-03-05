@@ -117,10 +117,10 @@ exports.addDefaults = /** @type Parser */ parser => {
     });
 
     // Season
-    parser.addHandler("seasons", /(?:complete\W|seasons?\W|\W|^)((?:s\d{1,2}[., +/\\&-]+)+s\d{1,2}\b)/i, range);
-    parser.addHandler("seasons", /(?:complete\W|seasons?\W|\W|^)[([]?(s\d{1,2}-\d{1,2}\b)[)\]]?/i, range);
-    parser.addHandler("seasons", /(?:(?:\bthe\W)?\bcomplete\W)?(?:seasons?|[Сс]езони?)[. ]?[-:]?[. ]?[([]?((?:\d{1,2}[., /\\&-]+)+\d{1,2}\b)[)\]]?/i, range);
-    parser.addHandler("seasons", /(?:(?:\bthe\W)?\bcomplete\W)?\bseasons?\b[. -]?(\d{1,2}[. -]?(?:to|thru|and|\+|:)[. -]?\d{1,2})\b/i, range);
+    parser.addHandler("seasons", /(?:complete\W|seasons?\W|\W|^)((?:s\d{1,2}[., +/\\&-]+)+s\d{1,2}\b)/i, range, { remove: true });
+    parser.addHandler("seasons", /(?:complete\W|seasons?\W|\W|^)[([]?(s\d{1,2}-\d{1,2}\b)[)\]]?/i, range, { remove: true });
+    parser.addHandler("seasons", /(?:(?:\bthe\W)?\bcomplete\W)?(?:seasons?|[Сс]езони?)[. ]?[-:]?[. ]?[([]?((?:\d{1,2}[., /\\&-]+)+\d{1,2}\b)[)\]]?/i, range, { remove: true });
+    parser.addHandler("seasons", /(?:(?:\bthe\W)?\bcomplete\W)?\bseasons?\b[. -]?(\d{1,2}[. -]?(?:to|thru|and|\+|:)[. -]?\d{1,2})\b/i, range, { remove: true });
     parser.addHandler("seasons", /(?:(?:\bthe\W)?\bcomplete\W)?(?:saison|season|[Сс]езон):?[. ]?(\d{1,2})/i, array(integer));
     parser.addHandler("seasons", /(?:(?:\bthe\W)?\bcomplete)?(?:\W|^)s(\d{1,2})(?:[\Wex]|$)/i, array(integer), { skipIfAlreadyFound: false });
     parser.addHandler("seasons", /(?:(?:\bthe\W)?\bcomplete\W)?(?:\W|^)(\d{1,2})[. ]?(?:st|nd|rd|th)[. ]*season/i, array(integer));
@@ -151,7 +151,7 @@ exports.addDefaults = /** @type Parser */ parser => {
 
     // can be both absolute episode and season+episode in format 101
     parser.addHandler("episodes", ({ title, result, matched }) => {
-        if (!result.seasons && !result.episodes) {
+        if (!result.episodes) {
             const indexes = [matched.resolution, matched.source, matched.codec, matched.audio]
                 .filter(component => component)
                 .map(component => component.matchIndex)

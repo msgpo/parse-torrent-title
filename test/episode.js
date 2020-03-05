@@ -182,7 +182,7 @@ describe("Parsing episode", () => {
         expect(parse(releaseName)).to.deep.include({ episode: 1 });
     });
 
-    it("should detect detect episodes when the range is for season", () => {
+    it("should not detect episodes when the range is for season", () => {
         const releaseName = "[F-D] Fairy Tail Season 1 -6 + Extras [480P][Dual-Audio]";
         expect(parse(releaseName)).to.not.have.property("episodes");
     });
@@ -307,5 +307,9 @@ describe("Parsing episode", () => {
         const releaseName = "Викинги / Vikings / Сезон: 5 / Серии: 1 из 20 [2017, WEB-DL 1080p] MVO";
         expect(parse(releaseName)).to.deep.include({ episode: 1 });
     });
-});
 
+    it("should detect episode after ordinal season and hyphen separator", () => {
+        const releaseName = "Kyoukai no Rinne (TV) 3rd Season - 23 [1080p]";
+        expect(parse(releaseName)).to.deep.include({ episode: 23 });
+    });
+});
