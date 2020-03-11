@@ -3,13 +3,11 @@ const { value, integer, boolean, lowercase, date, range, yearRange, array } = re
 exports.addDefaults = /** @type Parser */ parser => {
 
     // Resolution
-    parser.addHandler("resolution", /[([]?1920x1080[)\]]?/i, value("1080p"), { remove: true });
-    parser.addHandler("resolution", /[([]?(?:1280|960)x720[)\]]?/i, value("720p"), { remove: true });
-    parser.addHandler("resolution", /[([]?640x480[)\]]?/i, value("480p"), { remove: true });
-    parser.addHandler("resolution", /[([]?(\d{3,4}x\d{3,4})[)\]]?/i, lowercase, { remove: true });
     parser.addHandler("resolution", /\b[([]?4k[)\]]?\b/i, value("4k"), { remove: true });
-    parser.addHandler("resolution", /(2160[pi])/i, value("4k"), { skipIfAlreadyFound: false, remove: true });
-    parser.addHandler("resolution", /([0-9]{3,4}[pi])/i, lowercase, { remove: true });
+    parser.addHandler("resolution", /2160[pi]/i, value("4k"), { skipIfAlreadyFound: false, remove: true });
+    parser.addHandler("resolution", /[([]?3840x2160[)\]]?/i, value("4k"), { remove: true });
+    parser.addHandler("resolution", /[([]?\d{3,4}x(\d{3,4})[)\]]?/i, value("$1p"), { remove: true });
+    parser.addHandler("resolution", /([0-9]{3,4})[pi]/i, value("$1p"), { remove: true });
 
     // Year
     parser.addHandler("date", /(?<=\W|^)([([]?(?:19[6-9]|20[012])[0-9][. -/\\](?:0[1-9]|1[012])[. -/\\](?:0[1-9]|[12][0-9]|3[01])[)\]]?)(?=\W|$)/, date("YYYY MM DD"), { remove: true });
@@ -161,8 +159,8 @@ exports.addDefaults = /** @type Parser */ parser => {
             const partTitle = title.slice(startIndex, endIndex);
 
             // try to match the episode inside the title with a separator, if not found include the start of the title as well
-            const matches = partTitle.match(/(?<!movie\W*|film\W*)[ .]?[([-][ .]?(\d{1,3})(?:a|b|v\d)?(?:\W|$)/i) ||
-                partTitle.match(/^[ .]?(\d{1,3})(?:a|b|v\d)?(?:\W|$)(?!movie|film)/i);
+            const matches = partTitle.match(/(?<!movie\W*|film\W*)[ .]?[([-][ .]?(\d{1,4})(?:a|b|v\d)?(?:\W|$)(?!movie|film)/i) ||
+                partTitle.match(/^[ .]?(\d{1,4})(?:a|b|v\d)?(?:\W|$)(?!movie|film)/i);
 
             if (matches) {
                 result.episodes = [matches[matches.length - 1]]

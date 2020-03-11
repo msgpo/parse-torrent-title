@@ -34,6 +34,13 @@ describe("Parsing resolution", () => {
 
     it("should detect custom resolution correctly", () => {
         const releaseName = "[JacobSwaggedUp] Kizumonogatari I: Tekketsu-hen (BD 1280x544) [MP4 Movie]";
-        expect(parse(releaseName)).to.deep.include({ resolution: "1280x544" });
+
+        expect(parse(releaseName)).to.deep.include({ resolution: "544p" });
+    });
+
+    it("should detect 720i resolution and format as 720p", () => {
+        const releaseName = "UFC 187 PPV 720i HDTV X264-KYR";
+
+        expect(parse(releaseName)).to.deep.include({ resolution: "720p" });
     });
 });

@@ -1,8 +1,8 @@
-const moment = require('moment');
+const moment = require("moment");
 
 exports.none = input => input;
 
-exports.value = staticValue => () => staticValue;
+exports.value = staticValue => input => staticValue.replace("$1", input);
 
 exports.integer = input => parseInt(input, 10);
 
