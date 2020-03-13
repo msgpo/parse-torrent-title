@@ -2,7 +2,12 @@ const moment = require("moment");
 
 exports.none = input => input;
 
-exports.value = staticValue => input => staticValue.replace("$1", input);
+exports.value = value => input => {
+    if (typeof value === "string") {
+        return value.replace("$1", input);
+    }
+    return value;
+};
 
 exports.integer = input => parseInt(input, 10);
 
