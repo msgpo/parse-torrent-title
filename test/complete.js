@@ -116,5 +116,9 @@ describe("Parsing complete collection", () => {
         const releaseName = "The Exorcist 1, 2, 3, 4, 5 - Complete Horror Anthology 1973-2005";
         expect(parse(releaseName)).to.deep.include({ complete: true });
     });
-});
 
+    it("should detect saga", () => {
+        const releaseName = "Harry.Potter.Complete.Saga. I - VIII .1080p.Bluray.x264.anoXmous";
+        expect(parse(releaseName)).to.deep.include({ complete: true });
+    });
+});
