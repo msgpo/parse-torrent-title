@@ -221,4 +221,9 @@ describe("Parsing season", () => {
         const releaseName = "Kyoukai no Rinne (TV) 3rd Season - 23 [1080p]";
         expect(parse(releaseName)).to.deep.include({ seasons: [3] });
     });
+
+    it("The Nile Egypts Great River with Bettany Hughes Series 1 4of4 10", () => {
+        const releaseName = "The Nile Egypts Great River with Bettany Hughes Series 1 4of4 10";
+        expect(parse(releaseName)).to.deep.include({ seasons: [1] });
+    });
 });
