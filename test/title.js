@@ -70,4 +70,9 @@ describe("Parsing title", () => {
         const releaseName = "Американские животные / American Animals (Барт Лэйтон / Bart Layton) [2018, Великобритания, США, драма, криминал, BDRip] MVO (СВ Студия)";
         expect(parse(releaseName)).to.deep.include({ title: "American Animals" });
     });
+
+    it("should detect title even when year is in beginning with paranthesis", () => {
+        const releaseName = "(2000) Le follie dell'imperatore - The Emperor's New Groove (DvdRip Ita Eng AC3 5.1).avi";
+        expect(parse(releaseName)).to.deep.include({ title: "Le follie dell'imperatore - The Emperor's New Groove" });
+    });
 });
