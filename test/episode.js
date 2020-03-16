@@ -312,4 +312,14 @@ describe("Parsing episode", () => {
         const releaseName = "Kyoukai no Rinne (TV) 3rd Season - 23 [1080p]";
         expect(parse(releaseName)).to.deep.include({ episode: 23 });
     });
+
+    it("should detect spanish full episode identifier", () => {
+        const releaseName = "El Chema Temporada 1 Capitulo 25";
+        expect(parse(releaseName)).to.deep.include({ episode: 25 });
+    });
+
+    it("should detect spanish multiple episode identifier", () => {
+        const releaseName = "Bleach 10º Temporada - 215 ao 220 - [DB-BR]";
+        expect(parse(releaseName)).to.deep.include({ episodes: [215, 216, 217, 218, 219, 220] });
+    });
 });

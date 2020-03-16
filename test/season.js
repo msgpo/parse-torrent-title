@@ -226,4 +226,34 @@ describe("Parsing season", () => {
         const releaseName = "The Nile Egypts Great River with Bettany Hughes Series 1 4of4 10";
         expect(parse(releaseName)).to.deep.include({ seasons: [1] });
     });
+
+    it("Teen Wolf - 04ª Temporada 720p", () => {
+        const releaseName = "Teen Wolf - 04ª Temporada 720p";
+        expect(parse(releaseName)).to.deep.include({ seasons: [4] });
+    });
+
+    it("Vikings 3 Temporada 720p", () => {
+        const releaseName = "Vikings 3 Temporada 720p";
+        expect(parse(releaseName)).to.deep.include({ seasons: [3] });
+    });
+
+    it("Merl - Temporada 1", () => {
+        const releaseName = "Merl - Temporada 1";
+        expect(parse(releaseName)).to.deep.include({ seasons: [1] });
+    });
+
+    it("Elementar 3º Temporada Dublado", () => {
+        const releaseName = "Elementar 3º Temporada Dublado";
+        expect(parse(releaseName)).to.deep.include({ seasons: [3] });
+    });
+
+    it("Beavis and Butt-Head - 1a. Temporada", () => {
+        const releaseName = "Beavis and Butt-Head - 1a. Temporada";
+        expect(parse(releaseName)).to.deep.include({ seasons: [1] });
+    });
+
+    it("3Âº Temporada Bob esponja Pt-Br", () => {
+        const releaseName = "3Âº Temporada Bob esponja Pt-Br";
+        expect(parse(releaseName)).to.deep.include({ seasons: [3] });
+    });
 });
