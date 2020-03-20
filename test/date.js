@@ -55,4 +55,34 @@ describe("Parsing date", () => {
 
         expect(parse(releaseName)).to.deep.include({ date: "2017-11-21" });
     });
+
+    it("WWE Smackdown - 11/21/17 - 21st November 2017 - Full Show", () => {
+        const releaseName = "WWE Smackdown - 11/21/17 - 21st November 2017 - Full Show";
+
+        expect(parse(releaseName)).to.deep.include({ date: "2017-11-21" });
+    });
+
+    it("WWE RAW 9th Dec 2019 WEBRip h264-TJ [TJET]", () => {
+        const releaseName = "WWE RAW 9th Dec 2019 WEBRip h264-TJ [TJET]";
+
+        expect(parse(releaseName)).to.deep.include({ date: "2019-12-09" });
+    });
+
+    it("WWE RAW 1st Dec 2019 WEBRip h264-TJ [TJET]", () => {
+        const releaseName = "WWE RAW 1st Dec 2019 WEBRip h264-TJ [TJET]";
+
+        expect(parse(releaseName)).to.deep.include({ date: "2019-12-01" });
+    });
+
+    it("WWE RAW 2nd Dec 2019 WEBRip h264-TJ [TJET]", () => {
+        const releaseName = "WWE RAW 2nd Dec 2019 WEBRip h264-TJ [TJET]";
+
+        expect(parse(releaseName)).to.deep.include({ date: "2019-12-02" });
+    });
+
+    it("WWE RAW 3rd Dec 2019 WEBRip h264-TJ [TJET]", () => {
+        const releaseName = "WWE RAW 3rd Dec 2019 WEBRip h264-TJ [TJET]";
+
+        expect(parse(releaseName)).to.deep.include({ date: "2019-12-03" });
+    });
 });

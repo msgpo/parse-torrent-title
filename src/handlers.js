@@ -13,8 +13,8 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("date", /(?<=\W|^)([([]?(?:19[6-9]|20[012])[0-9][. -/\\](?:0[1-9]|1[012])[. -/\\](?:0[1-9]|[12][0-9]|3[01])[)\]]?)(?=\W|$)/, date("YYYY MM DD"), { remove: true });
     parser.addHandler("date", /(?<=\W|^)([([]?(?:0[1-9]|[12][0-9]|3[01])[. -/\\](?:0[1-9]|1[012])[. -/\\](?:19[6-9]|20[012])[0-9][)\]]?)(?=\W|$)/, date("DD MM YYYY"), { remove: true });
     parser.addHandler("date", /(?<=\W|^)([([]?(?:0[1-9]|1[012])[. -/\\](?:0[1-9]|[12][0-9]|3[01])[. -/\\](?:[0][1-9]|[0126789][0-9])[)\]]?)(?=\W|$)/, date("MM DD YY"), { remove: true });
-    parser.addHandler("date", /(?<=\W|^)([([]?(?:0?[1-9]|[12][0-9]|3[01])[. -/\\](?:feb|jan|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[. -/\\](?:19[7-9]|20[012])[0-9][)\]]?)(?=\W|$)/i, date("DD MMM YYYY"), { remove: true });
-    parser.addHandler("date", /(?<=\W|^)([([]?(?:0?[1-9]|[12][0-9]|3[01])[. -/\\](?:feb|jan|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[. -/\\](?:[0][1-9]|[0126789][0-9])[)\]]?)(?=\W|$)/i, date("DD MMM YY"), { remove: true });
+    parser.addHandler("date", /(?<=\W|^)([([]?(?:0?[1-9]|[12][0-9]|3[01])[. ]?(?:st|nd|rd|th)?[. -/\\](?:feb|jan|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[. -/\\](?:19[7-9]|20[012])[0-9][)\]]?)(?=\W|$)/i, date("DD MMM YYYY"), { remove: true });
+    parser.addHandler("date", /(?<=\W|^)([([]?(?:0?[1-9]|[12][0-9]|3[01])[. ]?(?:st|nd|rd|th)?[. -/\\](?:feb|jan|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[. -/\\](?:[0][1-9]|[0126789][0-9])[)\]]?)(?=\W|$)/i, date("DD MMM YY"), { remove: true });
 
     // Year
     parser.addHandler("year", /[([]?[ .]?((?:19[0-9]|20[012])[0-9][ .]?-[ .]?(?:19[0-9]|20[012])[0-9])[ .]?[)\]]?/, yearRange, { remove: true });
