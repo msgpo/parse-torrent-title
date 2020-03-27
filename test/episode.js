@@ -322,4 +322,14 @@ describe("Parsing episode", () => {
         const releaseName = "Bleach 10º Temporada - 215 ao 220 - [DB-BR]";
         expect(parse(releaseName)).to.deep.include({ episodes: [215, 216, 217, 218, 219, 220] });
     });
+
+    it("should not detect episode in episode checksum code", () => {
+        const releaseName = "[CBM]_Medaka_Box_-_11_-_This_Is_the_End!!_[720p]_[436E0E90].mkv";
+        expect(parse(releaseName)).to.deep.include({ episodes: [11] });
+    });
+
+    it("should not detect episode in episode checksum code without container", () => {
+        const releaseName = "[CBM]_Medaka_Box_-_11_-_This_Is_the_End!!_[720p]_[436E0E90]";
+        expect(parse(releaseName)).to.deep.include({ episodes: [11] });
+    });
 });

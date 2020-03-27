@@ -41,6 +41,7 @@ function createHandlerFromRegExp(name, regExp, transformer, options) {
                 matched[name] = matched[name] || { rawMatch, matchIndex: match.index };
                 result[name] = result[name] || options.value || transformed;
                 return {
+                    rawMatch,
                     matchIndex: match.index,
                     remove: options.remove
                 };
@@ -121,14 +122,14 @@ class Parser {
         for (const handler of this.handlers) {
             const matchResult = handler({ title, result, matched });
             if (matchResult && matchResult.remove) {
-                title = title.replace(matched[handler.handlerName].rawMatch, "");
+                title = title.replace(matchResult.rawMatch, "");
             }
             if (matchResult && matchResult.matchIndex && matchResult.matchIndex < endOfTitle) {
                 endOfTitle = matchResult.matchIndex;
             }
         }
 
-        result.title = cleanTitle(title.substr(0, endOfTitle));
+        result.title = cleanTitle(title.slice(0, endOfTitle));
 
         return result;
     }
