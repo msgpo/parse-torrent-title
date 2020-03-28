@@ -332,4 +332,9 @@ describe("Parsing episode", () => {
         const releaseName = "[CBM]_Medaka_Box_-_11_-_This_Is_the_End!!_[720p]_[436E0E90]";
         expect(parse(releaseName)).to.deep.include({ episodes: [11] });
     });
+
+    it("should not detect episode before season", () => {
+        const releaseName = "22-7 (Season 1) (1080p)(HEVC x265 10bit)(Eng-Subs)-Judas[TGx] ⭐";
+        expect(parse(releaseName)).to.not.have.property("episodes");
+    });
 });

@@ -153,12 +153,16 @@ exports.addDefaults = /** @type Parser */ parser => {
     // can be both absolute episode and season+episode in format 101
     parser.addHandler("episodes", ({ title, result, matched }) => {
         if (!result.episodes) {
-            const indexes = [matched.resolution, matched.source, matched.codec, matched.audio]
+            const startIndexes = [matched.year, matched.seasons]
                 .filter(component => component)
                 .map(component => component.matchIndex)
                 .filter(index => index > 0);
-            const startIndex = matched.year && matched.year.matchIndex || 0;
-            const endIndex = Math.min(...indexes, title.length);
+            const endIndexes = [matched.resolution, matched.source, matched.codec, matched.audio]
+                .filter(component => component)
+                .map(component => component.matchIndex)
+                .filter(index => index > 0);
+            const startIndex = startIndexes.length ? Math.min(...startIndexes) : 0;
+            const endIndex = Math.min(...endIndexes, title.length);
             const partTitle = title.slice(startIndex, endIndex);
 
             // try to match the episode inside the title with a separator, if not found include the start of the title as well
