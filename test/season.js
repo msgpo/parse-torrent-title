@@ -237,6 +237,11 @@ describe("Parsing season", () => {
         expect(parse(releaseName)).to.deep.include({ seasons: [3] });
     });
 
+    it("Eu, a Patroa e as Crianças  4° Temporada Completa - HDTV - Dublado", () => {
+        const releaseName = "Eu, a Patroa e as Crianças  4° Temporada Completa - HDTV - Dublado";
+        expect(parse(releaseName)).to.deep.include({ seasons: [4] });
+    });
+
     it("Merl - Temporada 1", () => {
         const releaseName = "Merl - Temporada 1";
         expect(parse(releaseName)).to.deep.include({ seasons: [1] });
