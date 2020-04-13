@@ -337,4 +337,9 @@ describe("Parsing episode", () => {
         const releaseName = "22-7 (Season 1) (1080p)(HEVC x265 10bit)(Eng-Subs)-Judas[TGx] ⭐";
         expect(parse(releaseName)).to.not.have.property("episodes");
     });
+
+    it("should detect multiple episode with tilde separator", () => {
+        const releaseName = "[Erai-raws] Carole and Tuesday - 01 ~ 12 [1080p][Multiple Subtitle]";
+        expect(parse(releaseName)).to.deep.include({ episodes: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] });
+    });
 });
