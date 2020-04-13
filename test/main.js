@@ -24,7 +24,7 @@ describe("Random releases", () => {
         expect(parse(releaseName)).to.deep.equal({
             title: "Color Of Night",
             unrated: true,
-            language: "vostfr",
+            language: "french",
             source: "BRRip",
             codec: "x264",
         });
@@ -126,7 +126,7 @@ describe("Random releases", () => {
             year: 1990,
             audio: "dts",
             resolution: "1080p",
-            language: "vfi",
+            language: "french",
             codec: "x265",
             group: "HTG",
         });
