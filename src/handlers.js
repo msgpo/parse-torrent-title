@@ -173,7 +173,7 @@ exports.addDefaults = /** @type Parser */ parser => {
                 result.episodes = [matches[matches.length - 1]]
                     .map(group => group.replace(/\D/g, ""))
                     .map(group => parseInt(group, 10));
-                return { matchIndex: matches.index };
+                return { matchIndex: title.indexOf(matches[0]) };
             }
         }
     });

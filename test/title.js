@@ -56,6 +56,11 @@ describe("Parsing title", () => {
         expect(parse(releaseName)).to.deep.include({ title: "Mutafukaz / MFKZ" });
     });
 
+    it("should clean release group tag title", () => {
+        const releaseName = "[Erai-raws] Kingdom 3rd Season - 02 [1080p].mkv";
+        expect(parse(releaseName)).to.deep.include({ title: "Kingdom" });
+    });
+
     it("should detect remove russian alt title", () => {
         const releaseName = "Голубая волна / Blue Crush (2002) DVDRip";
         expect(parse(releaseName)).to.deep.include({ title: "Blue Crush" });
