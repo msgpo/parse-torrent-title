@@ -202,6 +202,26 @@ describe("Parsing season", () => {
         expect(parse(releaseName)).to.deep.include({ seasons: [1, 2, 3, 4, 5, 6, 7] });
     });
 
+    it("should detect multiple seasons with one space and hyphen separator", () => {
+        const releaseName = "[F-D] Fairy Tail Season 1 -6 + Extras [480P][Dual-Audio]";
+        expect(parse(releaseName)).to.deep.include({ seasons: [1, 2, 3, 4, 5, 6] });
+    });
+
+    it("should detect multiple seasons with spaces and hyphen separator", () => {
+        const releaseName = "Coupling Season 1 - 4 Complete DVDRip - x264 - MKV by RiddlerA";
+        expect(parse(releaseName)).to.deep.include({ seasons: [1, 2, 3, 4] });
+    });
+
+    it("should single season with spaces and hyphen separator", () => {
+        const releaseName = "[HR] Boku no Hero Academia 87 (S4-24) [1080p HEVC Multi-Subs] HR-GZ";
+        expect(parse(releaseName)).to.deep.include({ seasons: [4] });
+    });
+
+    it("Tokyo Ghoul Root A - 07 [S2-07] [Eng Sub] 480p [email protected]", () => {
+        const releaseName = "Tokyo Ghoul Root A - 07 [S2-07] [Eng Sub] 480p [email protected]";
+        expect(parse(releaseName)).to.deep.include({ seasons: [2] });
+    });
+
     it("Ace of the Diamond: 1st Season", () => {
         const releaseName = "Ace of the Diamond: 1st Season";
         expect(parse(releaseName)).to.deep.include({ seasons: [1] });
@@ -220,6 +240,11 @@ describe("Parsing season", () => {
     it("Kyoukai no Rinne (TV) 3rd Season - 23 [1080p]", () => {
         const releaseName = "Kyoukai no Rinne (TV) 3rd Season - 23 [1080p]";
         expect(parse(releaseName)).to.deep.include({ seasons: [3] });
+    });
+
+    it("[Erai-raws] Granblue Fantasy The Animation Season 2 - 08 [1080p][Multiple Subtitle].mkv", () => {
+        const releaseName = "[Erai-raws] Granblue Fantasy The Animation Season 2 - 08 [1080p][Multiple Subtitle].mkv";
+        expect(parse(releaseName)).to.deep.include({ seasons: [2] });
     });
 
     it("The Nile Egypts Great River with Bettany Hughes Series 1 4of4 10", () => {
