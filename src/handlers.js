@@ -194,14 +194,14 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("complete", /duology|trilogy|quadr[oi]logy|tetralogy|pentalogy|hexalogy|heptalogy|anthology|saga/i, boolean, { skipIfAlreadyFound: false });
 
     // Language
-    parser.addHandler("language", /\bRUS\b/i, lowercase);
-    parser.addHandler("language", /\bNL\b/, lowercase);
-    parser.addHandler("language", /\bFLEMISH\b/, lowercase);
-    parser.addHandler("language", /\bGERMAN\b/, lowercase);
-    parser.addHandler("language", /\bDUBBED\b/, lowercase);
-    parser.addHandler("language", /\b(ITA(?:LIAN)?|iTALiAN)\b/, value("ita"));
-    parser.addHandler("language", /\bFR(?:ENCH)?\b/, lowercase);
-    parser.addHandler("language", /\bTruefrench|VF(?:[FI])\b/i, lowercase);
-    parser.addHandler("language", /\bVOST(?:(?:F(?:R)?)|A)?|SUBFRENCH\b/i, lowercase);
-    parser.addHandler("language", /\bMULTi(?:Lang|-VF2)?\b/i, lowercase);
+    parser.addHandler("language", /\bRUS\b/i, value("russian"));
+    parser.addHandler("language", /\bNL\b/, value("dutch"));
+    parser.addHandler("language", /\bFLEMISH\b/, value("flemish"));
+    parser.addHandler("language", /\bGERMAN\b/, value("german"));
+    parser.addHandler("language", /\b(ITA(?:LIAN)?|iTALiAN)\b/, value("italian"));
+    parser.addHandler("language", /\bFR(?:ENCH)?\b/, value("french"));
+    parser.addHandler("language", /\bTruefrench|VF(?:[FI])\b/i, value("french"));
+    parser.addHandler("language", /\bVOST(?:(?:F(?:R)?)|A)?|SUBFRENCH\b/i, value("french"));
+    parser.addHandler("language", /\b(?:DUBBED|DUBS?|DUAL[- ]+AUDIO)\b/i, value("dubbed"));
+    parser.addHandler("language", /\bMULTi(?:Lang|-VF2)?\b/i, value("multi"));
 };
