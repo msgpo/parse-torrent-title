@@ -50,29 +50,27 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("region", /R[0-9]/);
 
     // Source
-    parser.addHandler("source", /\b(?:HD-?)?CAM\b/, { remove: true });
-    parser.addHandler("source", /\b(?:HD-?)?T(?:ELE)?S(?:YNC)?\b/i, { remove: true });
+    parser.addHandler("source", /\b(?:HD[ .-]*)?CAM(?:[ .-]*Rip)?\b/i, value("CAM"), { remove: true });
+    parser.addHandler("source", /\b(?:HD[ .-]*)?T(?:ELE)?S(?:YNC)?\b/i, value("TeleSync"), { remove: true });
+    parser.addHandler("source", /\b(?:HD[ .-]*)?T(?:ELE)?C(?:INE)?\b/, value("TeleCine"), { remove: true });
     parser.addHandler("source", /\bUltraHD\b/i, value("UHDRip"), { remove: true });
-    parser.addHandler("source", /\bUHD-?(?:Rip)?\b/i, value("UHDRip"), { remove: true });
-    parser.addHandler("source", /\bHD-?Rip\b/i, value("HDRip"), { remove: true });
+    parser.addHandler("source", /\bUHD(?:[ .-]*Rip)?\b/i, value("UHDRip"), { remove: true });
+    parser.addHandler("source", /\bHD[ .-]*Rip\b/i, value("HDRip"), { remove: true });
     parser.addHandler("source", /\bHDR\b/i, value("HDRip"), { remove: true });
     parser.addHandler("source", /\bBR[ .-]*Rip\b/i, value("BRRip"), { remove: true });
-    parser.addHandler("source", /\bBDRip\b|\bBD-RM\b|[[(]BD[\]) .,-]/i, value("BDRip"), { remove: true });
-    parser.addHandler("source", /\bDVDRip\b/i, value("DVDRip"), { remove: true });
-    parser.addHandler("source", /\bDVD(?:R[0-9])?\b/i, value("DVD"), { remove: true });
-    parser.addHandler("source", /\bDVD?Scr\b/i, value("DVDScr"), { remove: true });
-    parser.addHandler("source", /\b(?:HD-?)?TVRip\b/i, { remove: true });
-    parser.addHandler("source", /\bTC\b/, value("TC"), { remove: true });
+    parser.addHandler("source", /\bBD[ .-]*Rip\b|\bBDR\b|\bBD-RM\b|[[(]BD[\]) .,-]/i, value("BDRip"), { remove: true });
+    parser.addHandler("source", /\bDVD[ .-]*Rip\b/i, value("DVDRip"), { remove: true });
+    parser.addHandler("source", /\b(?:DVD?|BD|BR)?[ .-]*Scr(?:eener)?\b/i, value("SCR"), { remove: true });
+    parser.addHandler("source", /\bDVD(?:R[0-9]?)?\b/i, value("DVD"), { remove: true });
     parser.addHandler("source", /\bPPVRip\b/i, value("PPVRip"), { remove: true });
+    parser.addHandler("source", /\bHD[ .-]*TV(?:Rip)?\b/i, value("HDTV"), { remove: true });
     parser.addHandler("source", /\bTVRips?\b/i, value("TVRip"), { remove: true });
     parser.addHandler("source", /\bR5\b/i, value("R5"), { remove: true });
-    parser.addHandler("source", /\bVHSScr\b/i, value("VHSScr"), { remove: true });
-    parser.addHandler("source", /\bBlu-?Ray\b/i, value("BluRay"), { remove: true });
-    parser.addHandler("source", /\bWEB-?DL\b/i, value("WEB-DL"), { remove: true });
-    parser.addHandler("source", /\bWEB-?Rip\b/i, value("WEBRip"), { remove: true });
+    parser.addHandler("source", /\bBlu[ .-]*Ray\b/i, value("BluRay"), { remove: true });
+    parser.addHandler("source", /\bWEB[ .-]*DL\b/i, value("WEB-DL"), { remove: true });
+    parser.addHandler("source", /\bWEB[ .-]*Rip\b/i, value("WEBRip"), { remove: true });
     parser.addHandler("source", /\b(?:DL|WEB|BD|BR)(?:RE)?MUX\b/i, { remove: true });
     parser.addHandler("source", /\b(DivX|XviD)\b/, { remove: true });
-    parser.addHandler("source", /\bHDTV\b/i, value("HDTV"), { remove: true });
 
     // Video depth
     parser.addHandler("bitDepth", /(?:8|10|12)-?bit/i, lowercase, { remove: true });
