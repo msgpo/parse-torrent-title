@@ -24,7 +24,7 @@ describe("Random releases", () => {
         expect(parse(releaseName)).to.deep.equal({
             title: "Color Of Night",
             unrated: true,
-            language: "french",
+            languages: ["french"],
             source: "BRRip",
             codec: "x264",
         });
@@ -56,7 +56,7 @@ describe("Random releases", () => {
             title: "Ecrit Dans Le Ciel",
             source: "DVDRip",
             year: 1954,
-            language: "multi",
+            languages: ["multi"],
             codec: "x264",
             audio: "ac3",
             group: "gismo65",
@@ -111,7 +111,7 @@ describe("Random releases", () => {
             title: "Desperation",
             source: "DVD",
             year: 2006,
-            language: "multi",
+            languages: ["multi"],
             region: "R9",
             group: "TBW1973",
         });
@@ -126,7 +126,7 @@ describe("Random releases", () => {
             year: 1990,
             audio: "dts",
             resolution: "1080p",
-            language: "french",
+            languages: ["french"],
             codec: "x265",
             group: "HTG",
         });
@@ -179,6 +179,7 @@ describe("Random releases", () => {
             title: "You",
             seasons: [1],
             season: 1,
+            languages: ["swedish"],
             resolution: "1080p",
             codec: "x264",
             group: "Justiso",
@@ -246,6 +247,7 @@ describe("Random releases", () => {
             seasons: [4],
             season: 4,
             episodes: [1, 2, 3, 4, 5, 6],
+            languages: ["english"],
             resolution: "1080p",
             source: "WEBRip",
         });

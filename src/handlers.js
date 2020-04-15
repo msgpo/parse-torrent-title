@@ -1,4 +1,4 @@
-const { value, integer, boolean, lowercase, date, range, yearRange, array } = require("./transformers");
+const { none, value, integer, boolean, lowercase, date, range, yearRange, array, uniqConcat } = require("./transformers");
 
 exports.addDefaults = /** @type Parser */ parser => {
 
@@ -56,7 +56,7 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("source", /\bUHD-?(?:Rip)?\b/i, value("UHDRip"), { remove: true });
     parser.addHandler("source", /\bHD-?Rip\b/i, value("HDRip"), { remove: true });
     parser.addHandler("source", /\bHDR\b/i, value("HDRip"), { remove: true });
-    parser.addHandler("source", /\bBRRip\b/i, value("BRRip"), { remove: true });
+    parser.addHandler("source", /\bBR[ .-]*Rip\b/i, value("BRRip"), { remove: true });
     parser.addHandler("source", /\bBDRip\b|\bBD-RM\b|[[(]BD[\]) .,-]/i, value("BDRip"), { remove: true });
     parser.addHandler("source", /\bDVDRip\b/i, value("DVDRip"), { remove: true });
     parser.addHandler("source", /\bDVD(?:R[0-9])?\b/i, value("DVD"), { remove: true });
@@ -99,7 +99,9 @@ exports.addDefaults = /** @type Parser */ parser => {
 
     // Container
     parser.addHandler("container", /(?:\.)?[[(]?\b(MKV|AVI|MP4|WMV|MPG|MPEG)\b[\])]?/i, lowercase, { remove: true });
-    parser.addHandler("container", /\[[A-Z0-9]{8}](?:\.([a-zA-Z0-9]{1,5}))?/, lowercase, { skipIfAlreadyFound: false, remove: true });
+
+    // Episode code
+    parser.addHandler("episodeCode", /[[(]([A-Z0-9]{8})[\])](?:\.[a-zA-Z0-9]{1,5}|$)/, none, { remove: true });
 
     // Volumes
     parser.addHandler("volumes", /vol(?:s|umes?)?[. -]*(?:\d{1,2}[., +/\\&-]+)+\d{1,2}\b/i, range, { remove: true });
@@ -196,14 +198,83 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("complete", /duology|trilogy|quadr[oi]logy|tetralogy|pentalogy|hexalogy|heptalogy|anthology|saga/i, boolean, { skipIfAlreadyFound: false });
 
     // Language
-    parser.addHandler("language", /\bRUS\b/i, value("russian"));
-    parser.addHandler("language", /\bNL\b/, value("dutch"));
-    parser.addHandler("language", /\bFLEMISH\b/, value("flemish"));
-    parser.addHandler("language", /\bGERMAN\b/, value("german"));
-    parser.addHandler("language", /\b(ITA(?:LIAN)?|iTALiAN)\b/, value("italian"));
-    parser.addHandler("language", /\bFR(?:ENCH)?\b/, value("french"));
-    parser.addHandler("language", /\bTruefrench|VF(?:[FI])\b/i, value("french"));
-    parser.addHandler("language", /\bVOST(?:(?:F(?:R)?)|A)?|SUBFRENCH\b/i, value("french"));
-    parser.addHandler("language", /\b(?:DUBBED|DUBS?|DUAL[- ]+AUDIO)\b/i, value("dubbed"));
-    parser.addHandler("language", /\bMULTi(?:Lang|-VF2)?\b/i, value("multi"));
+    parser.addHandler("languages", /\bMulti(?:ple)?[ .-]*(?:Lang(?:uages?)?|sub(?:s|titles?)?|Audio|VF2)?\b/i, uniqConcat(value("multi")));
+    parser.addHandler("languages", /\bengl?(?:subs?)?\b/i, uniqConcat(value("english")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bing(?:l[eéê]s)?\b/i, uniqConcat(value("english")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bEN\b/i, uniqConcat(value("english")), { skipFromTitle: true, skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\benglish?\b/i, uniqConcat(value("english")), { skipFromTitle: true, skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\b(?:JP|JAP|JPN)\b/i, uniqConcat(value("japanese")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bjapanese\b/i, uniqConcat(value("japanese")), { skipFromTitle: true, skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\b(?:KOR|kor[ .-]?sub)\b/i, uniqConcat(value("korean")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bkorean\b/i, uniqConcat(value("korean")), { skipFromTitle: true, skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\b(?:mand[ae]rin|ch[sn])\b/i, uniqConcat(value("chinese")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bCHI\b/, uniqConcat(value("chinese")), { skipFromTitle: true, skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bchinese\b/i, uniqConcat(value("chinese")), { skipFromTitle: true, skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bFR(?:ench|a|e)?\b/i, uniqConcat(value("french")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bTruefrench|VF(?:[FI])\b/i, uniqConcat(value("french")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bVOST(?:(?:F(?:R)?)|A)?|SUBFRENCH\b/i, uniqConcat(value("french")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\b(?:ESP|spa|(en[ .]+)?espa[nñ]ola?|latino)\b/i, uniqConcat(value("spanish")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bes(?=[ .,/-]+(?:[a-zA-Z]{2}[ .,/-]+){2,})\b/i, uniqConcat(value("spanish")), { skipFromTitle: true, skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\b(?<=[ .,/-]+(?:[a-zA-Z]{2}[ .,/-]+){2,})es\b/i, uniqConcat(value("spanish")), { skipFromTitle: true, skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\b(?<=[ .,/-]+(?:[a-zA-Z]{2}[ .,/-]+))es(?=[ .,/-]+(?:[a-zA-Z]{2}[ .,/-]+))\b/i, uniqConcat(value("spanish")), { skipFromTitle: true, skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bspanish\b/i, uniqConcat(value("spanish")), { skipFromTitle: true, skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\b(?:p[rt]|en|port)[. (\\/-]*BR\b/i, uniqConcat(value("portuguese")), { skipIfAlreadyFound: false, remove: true });
+    parser.addHandler("languages", /\b(?:leg(?:endado|endas?)?|dub(?:lado)|portugu[eèê]se?)[. -]*BR\b/i, uniqConcat(value("portuguese")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bleg(?:endado|endas?)\b/i, uniqConcat(value("portuguese")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bportugu[eèê]s[ea]?\b/i, uniqConcat(value("portuguese")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bPT[. -]*(?:PT|ENG?|sub(?:s|titles?))\b/i, uniqConcat(value("portuguese")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bITA\b/i, uniqConcat(value("italian")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bIT(?=[ .,/-]+(?:[a-zA-Z]{2}[ .,/-]+){2,})\b/, uniqConcat(value("italian")), { skipFromTitle: true, skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\biTALiAN\b/i, uniqConcat(value("italian")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bitalian\b/i, uniqConcat(value("italian")), { skipFromTitle: true, skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bgreek[ .-]*(?:audio|lang(?:uage)?|sub(?:s|titles?)?)\b/i, uniqConcat(value("greek")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\b(?:GER|DEU)\b/i, uniqConcat(value("german")), { skipFromTitle: true, skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bde(?=[ .,/-]+(?:[a-zA-Z]{2}[ .,/-]+){2,})\b/i, uniqConcat(value("german")), { sskipFromTitle: true, skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\b(?<=[ .,/-]+(?:[a-zA-Z]{2}[ .,/-]+){2,})de\b/i, uniqConcat(value("german")), { skipFromTitle: true, skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\b(?<=[ .,/-]+(?:[a-zA-Z]{2}[ .,/-]+))de(?=[ .,/-]+(?:[a-zA-Z]{2}[ .,/-]+))\b/i, uniqConcat(value("german")), { skipFromTitle: true, skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bgerman\b/i, uniqConcat(value("german")), { skipFromTitle: true, skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bRUS?\b/i, uniqConcat(value("russian")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\brussian\b/i, uniqConcat(value("russian")), { skipFromTitle: true, skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bhin(?:di)?\b/i, uniqConcat(value("hindi")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\b(?:tel(?!\W*aviv)|telugu)\b/i, uniqConcat(value("telugu")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\btam(?:il)?\b/i, uniqConcat(value("tamil")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bLT\b/, uniqConcat(value("lithuanian")), { skipFromTitle: true, skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\b(?:PL|pol)\b/i, uniqConcat(value("polish")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bpolish\b/i, uniqConcat(value("polish")), { skipFromTitle: true, skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bCZ[EH]?\b/i, uniqConcat(value("czech")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bczech\b/i, uniqConcat(value("czech")), { skipFromTitle: true, skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bHU\b/, uniqConcat(value("hungarian")), { skipFromTitle: true, skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bHUN(?:garian)?\b/i, uniqConcat(value("hungarian")), { skipFromTitle: true, skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bROM(?:manian)?\b/i, uniqConcat(value("romanian")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bRO(?=[ .,/-]*(?:[a-zA-Z]{2}[ .,/-]+)*sub)/i, uniqConcat(value("romanian")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\b(?:HRV|croatian|HR(?=[ .,/-]*(?:[a-zA-Z]{2}[ .,/-]+)*sub))\b/i, uniqConcat(value("croatian")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\b(?:NL|dut)\b/i, uniqConcat(value("dutch")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bdutch\b/i, uniqConcat(value("dutch")), { skipFromTitle: true, skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bflemish\b/i, uniqConcat(value("dutch")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\b(?:DK|danska|dansub|nordic)\b/i, uniqConcat(value("danish")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bdanish\b/i, uniqConcat(value("danish")), { skipFromTitle: true, skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\b(?:FI|finsk|finsub|nordic)\b/i, uniqConcat(value("finnish")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bfinnish\b/i, uniqConcat(value("finnish")), { skipFromTitle: true, skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\b(?:SE|swe|swesubs?|sv(?:ensk)?|nordic)\b/i, uniqConcat(value("swedish")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bswedish\b/i, uniqConcat(value("swedish")), { skipFromTitle: true, skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\b(?:NOR|norsk|norsub|nordic)\b/i, uniqConcat(value("norwegian")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bnorwegian\b/i, uniqConcat(value("norwegian")), { skipFromTitle: true, skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\b(?:arabic|arab.*(?:audio|lang(?:uage)?|sub(?:s|titles?)?))\b/i, uniqConcat(value("arabic")), { skipFromTitle: true, skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\b(?:turkish|tur)\b/i, uniqConcat(value("turkish")), { skipFromTitle: true, skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\b(?:hebrew)\b/i, uniqConcat(value("hebrew")), { skipFromTitle: true, skipIfAlreadyFound: false });
+
+    // infer pt language based on season/episode naming
+    parser.addHandler("languages", ({ title, result, matched }) => {
+        if (!result.languages || ["portuguese", "spanish"].every(l => !result.languages.includes(l))) {
+            if ((matched.seasons && matched.seasons.rawMatch.match(/temporada/i)) ||
+                (matched.episodes && matched.episodes.rawMatch.match(/capitulo|ao/i)) ||
+                title.match(/dublado/i)) {
+                result.languages = (result.languages || []).concat("portuguese");
+            }
+        }
+        return { matchIndex: 0 };
+    });
+
+    // Dubbed
+    parser.addHandler("dubbed", /\b(?:DUBBED|dublado|dubbing|DUBS?|(?:DUAL|MULTI)[- ]+AUDIO)\b/i, boolean);
 };

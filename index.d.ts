@@ -30,7 +30,8 @@ declare namespace ParseTorrentTitle {
         season?: number;
         episodes?: Array<number>;
         episode?: number;
-        language?: string;
+        languages?: string;
+        dubbed?: boolean;
     }
 
     interface Handler {

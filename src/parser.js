@@ -13,11 +13,15 @@ function extendOptions(options) {
 
     const defaultOptions = {
         skipIfAlreadyFound: true,
+        skipFromTitle: false,
         remove: false
     };
 
     if (typeof options.skipIfAlreadyFound === "undefined") {
         options.skipIfAlreadyFound = defaultOptions.skipIfAlreadyFound;
+    }
+    if (typeof options.skipFromTitle === "undefined") {
+        options.skipFromTitle = defaultOptions.skipFromTitle;
     }
     if (typeof options.remove === "undefined") {
         options.remove = defaultOptions.remove;
@@ -36,10 +40,11 @@ function createHandlerFromRegExp(name, regExp, transformer, options) {
         const [rawMatch, cleanMatch] = match || [];
 
         if (rawMatch) {
-            const transformed = transformer(cleanMatch || rawMatch);
+            const transformed = transformer(cleanMatch || rawMatch, result[name]);
+
             if (transformed) {
                 matched[name] = matched[name] || { rawMatch, matchIndex: match.index };
-                result[name] = result[name] || options.value || transformed;
+                result[name] = options.value || transformed;
                 return {
                     rawMatch,
                     matchIndex: match.index,
@@ -124,7 +129,7 @@ class Parser {
             if (matchResult && matchResult.remove) {
                 title = title.replace(matchResult.rawMatch, "");
             }
-            if (matchResult && matchResult.matchIndex && matchResult.matchIndex < endOfTitle) {
+            if (!handler.skipFromTitle && matchResult && matchResult.matchIndex && matchResult.matchIndex < endOfTitle) {
                 endOfTitle = matchResult.matchIndex;
             }
         }

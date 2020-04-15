@@ -56,3 +56,10 @@ exports.yearRange = input => {
 };
 
 exports.array = chain => input => [chain ? chain(input) : input];
+
+exports.uniqConcat = chain => (input, result) => {
+    const newResult = result || [];
+    const value = chain(input);
+
+    return newResult.includes(value) ? newResult : newResult.concat(value);
+};
