@@ -138,7 +138,8 @@ exports.addDefaults = /** @type Parser */ parser => {
     });
 
     // Episode
-    parser.addHandler("episodes", /(?:[\W\d]|^)ep?[ .]?[([]?(\d{1,3}(?:[ .]?(?:[&+]|ep?){1,2}[ .]?\d{1,3})+)(?:\W|$)/i, range);
+    parser.addHandler("episodes", /(?:[\W\d]|^)e[ .]?[([]?(\d{1,3}(?:[ .-]*(?:[&+]|e){1,2}[ .]?\d{1,3})+)(?:\W|$)/i, range);
+    parser.addHandler("episodes", /(?:[\W\d]|^)ep[ .]?[([]?(\d{1,3}(?:[ .-]*(?:[&+]|ep){1,2}[ .]?\d{1,3})+)(?:\W|$)/i, range);
     parser.addHandler("episodes", /(?:[\W\d]|^)\d+x[ .]?[([]?(\d{1,3}(?:[ .]?[x][ .]?\d{1,3})+)(?:\W|$)/i, range);
     parser.addHandler("episodes", /(?:[\W\d]|^)(?:episodes?|[Сс]ерии:?)[ .]?[([]?(\d{1,3}(?:[ .+]*[&+][ .]?\d{1,3})+)(?:\W|$)/i, range);
     parser.addHandler("episodes", /[([]?(?:\D|^)(\d{1,3}[ .]?ao[ .]?\d{1,3})[)\]]?(?:\W|$)/i, range);
@@ -197,7 +198,8 @@ exports.addDefaults = /** @type Parser */ parser => {
 
     // Language
     parser.addHandler("languages", /\bMulti(?:ple)?[ .-]*(?:Lang(?:uages?)?|sub(?:s|titles?)?|Audio|VF2)?\b/i, uniqConcat(value("multi")));
-    parser.addHandler("languages", /\bengl?(?:subs?)?\b/i, uniqConcat(value("english")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bengl?(?:sub[a-zA-Z]*)?\b/i, uniqConcat(value("english")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\beng?(?:sub[a-zA-Z]*)\b/i, uniqConcat(value("english")), { skipIfAlreadyFound: false });
     parser.addHandler("languages", /\bing(?:l[eéê]s)?\b/i, uniqConcat(value("english")), { skipIfAlreadyFound: false });
     parser.addHandler("languages", /\bEN\b/i, uniqConcat(value("english")), { skipFromTitle: true, skipIfAlreadyFound: false });
     parser.addHandler("languages", /\benglish?\b/i, uniqConcat(value("english")), { skipFromTitle: true, skipIfAlreadyFound: false });

@@ -470,6 +470,12 @@ describe("Parsing language", () => {
         expect(parse(releaseName)).to.deep.include({ languages: ["korean"] });
     });
 
+    it("Atonement.2017.KOREAN.ENSUBBED.1080p.WEBRip.x264-VXT", () => {
+        const releaseName = "Atonement.2017.KOREAN.ENSUBBED.1080p.WEBRip.x264-VXTT";
+
+        expect(parse(releaseName)).to.deep.include({ languages: ["english", "korean"] });
+    });
+
     it("A Freira (2018) Dublado HD-TS 720p", () => {
         const releaseName = "A Freira (2018) Dublado HD-TS 720p";
 
@@ -600,6 +606,12 @@ describe("Parsing language", () => {
         const releaseName = "2007 Saturno Contro [Saturn In Opposition] (ITA-FRA-TUR) [EngSub";
 
         expect(parse(releaseName)).to.deep.include({ languages: ["english", "french", "italian", "turkish"] });
+    });
+
+    it("Cowboy Bebop - 1080p BDrip Audio+sub MULTI (VF / VOSTFR)", () => {
+        const releaseName = "Cowboy Bebop - 1080p BDrip Audio+sub MULTI (VF / VOSTFR)";
+
+        expect(parse(releaseName)).to.deep.include({ languages: ["multi", "french"] });
     });
 
     it("My Big Fat Greek Wedding (2002) 720p BrRip x264 - YIFY", () => {

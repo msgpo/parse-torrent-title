@@ -268,9 +268,24 @@ describe("Parsing episode", () => {
         expect(parse(releaseName)).to.deep.include({ episode: 5 });
     });
 
-    it("should detect multiple episodes with E sign and no separator", () => {
+    it("should detect multiple episodes with multiple E sign and no separator", () => {
         const releaseName = "Stargate Universe S01E01E02E03.mp4";
         expect(parse(releaseName)).to.deep.include({ episodes: [1, 2, 3] });
+    });
+
+    it("should detect multiple episodes with multiple E sign and hyphen separator", () => {
+        const releaseName = "Stargate Universe S01E01-E02-E03.mp4";
+        expect(parse(releaseName)).to.deep.include({ episodes: [1, 2, 3] });
+    });
+
+    it("should detect multiple episodes with E sign and hyphen spaced separator", () => {
+        const releaseName = "Pokemon Black & White E10 - E17 [CW] AVI";
+        expect(parse(releaseName)).to.deep.include({ episodes: [10, 11, 12, 13, 14, 15, 16, 17] });
+    });
+
+    it("should detect multiple episodes with E sign and hyphen separator", () => {
+        const releaseName = "Pokémon.S01E01-E04.SWEDISH.VHSRip.XviD-aka";
+        expect(parse(releaseName)).to.deep.include({ episodes: [1, 2, 3, 4] });
     });
 
     it("should detect episode with single episode and not range", () => {
