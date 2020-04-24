@@ -213,7 +213,7 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("languages", /\bFR(?:ench|a|e)?\b/i, uniqConcat(value("french")), { skipIfAlreadyFound: false });
     parser.addHandler("languages", /\bTruefrench|VF(?:[FI])\b/i, uniqConcat(value("french")), { skipIfAlreadyFound: false });
     parser.addHandler("languages", /\bVOST(?:(?:F(?:R)?)|A)?|SUBFRENCH\b/i, uniqConcat(value("french")), { skipIfAlreadyFound: false });
-    parser.addHandler("languages", /\b(?:ESP|spa|(en[ .]+)?espa[nñ]ola?|latino)\b/i, uniqConcat(value("spanish")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\b(?:ESP|spa|(en[ .]+)?espa[nñ]ola?|lat(?:ino)?)\b/i, uniqConcat(value("spanish")), { skipIfAlreadyFound: false });
     parser.addHandler("languages", /\bes(?=[ .,/-]+(?:[a-zA-Z]{2}[ .,/-]+){2,})\b/i, uniqConcat(value("spanish")), { skipFromTitle: true, skipIfAlreadyFound: false });
     parser.addHandler("languages", /\b(?<=[ .,/-]+(?:[a-zA-Z]{2}[ .,/-]+){2,})es\b/i, uniqConcat(value("spanish")), { skipFromTitle: true, skipIfAlreadyFound: false });
     parser.addHandler("languages", /\b(?<=[ .,/-]+(?:[a-zA-Z]{2}[ .,/-]+))es(?=[ .,/-]+(?:[a-zA-Z]{2}[ .,/-]+))\b/i, uniqConcat(value("spanish")), { skipFromTitle: true, skipIfAlreadyFound: false });

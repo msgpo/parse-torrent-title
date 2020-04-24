@@ -182,6 +182,12 @@ describe("Parsing language", () => {
         expect(parse(releaseName)).to.deep.include({ languages: ["english", "spanish"] });
     });
 
+    it("Dumbo.2019.1080p.Dual.Lat", () => {
+        const releaseName = "Dumbo.2019.1080p.Dual.Lat";
+
+        expect(parse(releaseName)).to.deep.include({ languages: ["spanish"] });
+    });
+
     it("Men in Black International 2019 (inglês português)", () => {
         const releaseName = "Men in Black International 2019 (inglês português)";
 
@@ -612,6 +618,12 @@ describe("Parsing language", () => {
         const releaseName = "Cowboy Bebop - 1080p BDrip Audio+sub MULTI (VF / VOSTFR)";
 
         expect(parse(releaseName)).to.deep.include({ languages: ["multi", "french"] });
+    });
+
+    it("Casablanca 1942 BDRip 1080p [multi language,multi subs].mkv", () => {
+        const releaseName = "Casablanca 1942 BDRip 1080p [multi language,multi subs].mkv";
+
+        expect(parse(releaseName)).to.deep.include({ languages: ["multi"] });
     });
 
     it("My Big Fat Greek Wedding (2002) 720p BrRip x264 - YIFY", () => {
