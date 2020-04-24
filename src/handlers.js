@@ -4,9 +4,10 @@ exports.addDefaults = /** @type Parser */ parser => {
 
     // Resolution
     parser.addHandler("resolution", /\b[([]?4k[)\]]?\b/i, value("4k"), { remove: true });
-    parser.addHandler("resolution", /2160[pi]/i, value("4k"), { skipIfAlreadyFound: false, remove: true });
+    parser.addHandler("resolution", /21600?[pi]/i, value("4k"), { skipIfAlreadyFound: false, remove: true });
     parser.addHandler("resolution", /[([]?3840x2160[)\]]?/i, value("4k"), { remove: true });
     parser.addHandler("resolution", /[([]?\d{3,4}x(\d{3,4})[)\]]?/i, value("$1p"), { remove: true });
+    parser.addHandler("resolution", /((?:480|720|1080))0[pi]/i, value("$1p"), { remove: true });
     parser.addHandler("resolution", /([0-9]{3,4})[pi]/i, value("$1p"), { remove: true });
 
     // Year

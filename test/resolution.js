@@ -43,4 +43,16 @@ describe("Parsing resolution", () => {
 
         expect(parse(releaseName)).to.deep.include({ resolution: "720p" });
     });
+
+    it("should detect typo in 720p", () => {
+        const releaseName = "IT Chapter Two.2019.7200p.AMZN WEB-DL.H264.[Eng Hin Tam Tel]DDP 5.1.MSubs.D0T.Telly";
+
+        expect(parse(releaseName)).to.deep.include({ resolution: "720p" });
+    });
+
+    it("should detect typo in 1080p", () => {
+        const releaseName = "Dumbo (1941) BRRip XvidHD 10800p-NPW";
+
+        expect(parse(releaseName)).to.deep.include({ resolution: "1080p" });
+    });
 });
