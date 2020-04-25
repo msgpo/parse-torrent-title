@@ -47,7 +47,7 @@ describe("Parsing language", () => {
     it("should detect the multi language correctly", () => {
         const releaseName = "Le Labyrinthe 2014 Multi-VF2 1080p BluRay x264-PopHD";
 
-        expect(parse(releaseName)).to.deep.include({ languages: ["multi"] });
+        expect(parse(releaseName)).to.deep.include({ languages: ["multi audio"] });
     });
 
     it("should detect the VFI language correctly", () => {
@@ -122,10 +122,16 @@ describe("Parsing language", () => {
         expect(parse(releaseName)).to.deep.include({ languages: ["spanish"] });
     });
 
+    it("Desmembrados (2006) [HDrip-XviD-AC3][Castellano]", () => {
+        const releaseName = "Desmembrados (2006) [HDrip-XviD-AC3][Castellano]";
+
+        expect(parse(releaseName)).to.deep.include({ languages: ["spanish"] });
+    });
+
     it("Patriot Games [1992] Eng, Ger, Cze, Hun, Pol + multisub  DVDrip", () => {
         const releaseName = "Patriot Games [1992] Eng, Ger, Cze, Hun, Pol + multisub  DVDrip";
 
-        expect(parse(releaseName)).to.deep.include({ languages: ["multi", "english", "german", "polish", "czech", "hungarian"] });
+        expect(parse(releaseName)).to.deep.include({ languages: ["multi subs", "english", "german", "polish", "czech", "hungarian"] });
     });
 
     it("Elvis Presley - La via del Male (King creole) - IT EN FR DE ES", () => {
@@ -137,7 +143,7 @@ describe("Parsing language", () => {
     it("FernGully [H264 - Ita Dut Fre Ger Eng Spa Aac - MultiSub]", () => {
         const releaseName = "FernGully [H264 - Ita Dut Fre Ger Eng Spa Aac - MultiSub]";
 
-        expect(parse(releaseName)).to.deep.include({ languages: ["multi", "english", "french", "spanish", "italian", "german", "dutch"] });
+        expect(parse(releaseName)).to.deep.include({ languages: ["multi subs", "english", "french", "spanish", "italian", "german", "dutch"] });
     });
 
     it("Jesus de Montreal / Jesus of Montreal - subtitulos espanol", () => {
@@ -173,19 +179,19 @@ describe("Parsing language", () => {
     it("Spider-Man (2002) Blu-Ray [720p] Dual Ingles-Español", () => {
         const releaseName = "Spider-Man (2002) Blu-Ray [720p] Dual Ingles-Español";
 
-        expect(parse(releaseName)).to.deep.include({ languages: ["english", "spanish"] });
+        expect(parse(releaseName)).to.deep.include({ languages: ["dual audio", "english", "spanish"] });
     });
 
     it("Abuela (2015) 1080p BluRay x264 AC3 Dual Latino-Inglés", () => {
         const releaseName = "Abuela (2015) 1080p BluRay x264 AC3 Dual Latino-Inglés";
 
-        expect(parse(releaseName)).to.deep.include({ languages: ["english", "spanish"] });
+        expect(parse(releaseName)).to.deep.include({ languages: ["dual audio", "english", "spanish"] });
     });
 
     it("Dumbo.2019.1080p.Dual.Lat", () => {
         const releaseName = "Dumbo.2019.1080p.Dual.Lat";
 
-        expect(parse(releaseName)).to.deep.include({ languages: ["spanish"] });
+        expect(parse(releaseName)).to.deep.include({ languages: ["dual audio", "spanish"] });
     });
 
     it("Men in Black International 2019 (inglês português)", () => {
@@ -215,7 +221,7 @@ describe("Parsing language", () => {
     it("Inception 2010 1080p BRRIP[dual-audio][eng-hindi]", () => {
         const releaseName = "Inception 2010 1080p BRRIP[dual-audio][eng-hindi]";
 
-        expect(parse(releaseName)).to.deep.include({ languages: ["english", "hindi"] });
+        expect(parse(releaseName)).to.deep.include({ languages: ["dual audio", "english", "hindi"] });
     });
 
     it("Inception (2010) 720p BDRip Tamil+Telugu+Hindi+Eng", () => {
@@ -317,7 +323,7 @@ describe("Parsing language", () => {
     it("A.Clockwork.Orange.1971.BRDRIP.1080p.DUAL.PORT-BR.ENG.gmenezes.m", () => {
         const releaseName = "A.Clockwork.Orange.1971.BRDRIP.1080p.DUAL.PORT-BR.ENG.gmenezes.m";
 
-        expect(parse(releaseName)).to.deep.include({ languages: ["english", "portuguese"] });
+        expect(parse(releaseName)).to.deep.include({ languages: ["dual audio", "english", "portuguese"] });
     });
 
     it("Superman I - O Filme 1978 Leg. BR - Mkv 1280x528", () => {
@@ -377,7 +383,7 @@ describe("Parsing language", () => {
     it("Titan.A.E.2000 720p  HDTV DTS Eng Fra Hun Rom Rus multisub", () => {
         const releaseName = "Titan.A.E.2000 720p  HDTV DTS Eng Fra Hun Rom Rus multisub";
 
-        expect(parse(releaseName)).to.deep.include({ languages: ["multi", "english", "french", "russian", "hungarian", "romanian"] });
+        expect(parse(releaseName)).to.deep.include({ languages: ["multi subs", "english", "french", "russian", "hungarian", "romanian"] });
     });
 
     it("Miami.Bici.2020.1080p.NETFLIX.WEB-DL.DDP5.1.H.264.EN-ROSub-ExtremlymTorrents", () => {
@@ -401,13 +407,13 @@ describe("Parsing language", () => {
     it("The Mechanic [1972] Eng,Deu,Fra,Esp,Rus + multisub DVDrip", () => {
         const releaseName = "The Mechanic [1972] Eng,Deu,Fra,Esp,Rus + multisub DVDrip";
 
-        expect(parse(releaseName)).to.deep.include({ languages: ["multi", "english", "french", "spanish", "german", "russian"] });
+        expect(parse(releaseName)).to.deep.include({ languages: ["multi subs", "english", "french", "spanish", "german", "russian"] });
     });
 
     it("Mommie Dearest [1981 PAL DVD][En.De.Fr.It.Es Multisubs[18]", () => {
         const releaseName = "Mommie Dearest [1981 PAL DVD][En.De.Fr.It.Es Multisubs[18]";
 
-        expect(parse(releaseName)).to.deep.include({ languages: ["multi", "english", "french", "spanish", "german"] }); // @TODO does not include it
+        expect(parse(releaseName)).to.deep.include({ languages: ["multi subs", "english", "french", "spanish", "german"] }); // @TODO does not include it
     });
 
     it("Pasienio sargyba S01E03 (2016 WEBRip LT)", () => {
@@ -443,7 +449,7 @@ describe("Parsing language", () => {
     it("Berserk 01-25 [dual audio JP,EN] MKV", () => {
         const releaseName = "Berserk 01-25 [dual audio JP,EN] MKV";
 
-        expect(parse(releaseName)).to.deep.include({ languages: ["english", "japanese"] });
+        expect(parse(releaseName)).to.deep.include({ languages: ["dual audio", "english", "japanese"] });
     });
 
     it("Shinjuku Swan 2015 JAP 1080p BluRay x264 DTS-JYK", () => {
@@ -509,7 +515,7 @@ describe("Parsing language", () => {
     it("Joker.2019.MULTi.Bluray.1080p.Atmos.7.1.En.Fr.Sp.Pt-DDR[EtHD]", () => {
         const releaseName = "Joker.2019.MULTi.Bluray.1080p.Atmos.7.1.En.Fr.Sp.Pt-DDR[EtHD]";
 
-        expect(parse(releaseName)).to.deep.include({ languages: ["multi", "english", "french"] }); // @TODO does not include sp,pt
+        expect(parse(releaseName)).to.deep.include({ languages: ["multi audio", "english", "french"] }); // @TODO does not include sp,pt
     });
 
     it("Dilbert complete series + en subs", () => {
@@ -617,13 +623,55 @@ describe("Parsing language", () => {
     it("Cowboy Bebop - 1080p BDrip Audio+sub MULTI (VF / VOSTFR)", () => {
         const releaseName = "Cowboy Bebop - 1080p BDrip Audio+sub MULTI (VF / VOSTFR)";
 
-        expect(parse(releaseName)).to.deep.include({ languages: ["multi", "french"] });
+        expect(parse(releaseName)).to.deep.include({ languages: ["multi audio", "french"] });
     });
 
     it("Casablanca 1942 BDRip 1080p [multi language,multi subs].mkv", () => {
         const releaseName = "Casablanca 1942 BDRip 1080p [multi language,multi subs].mkv";
 
-        expect(parse(releaseName)).to.deep.include({ languages: ["multi"] });
+        expect(parse(releaseName)).to.deep.include({ languages: ["multi subs", "multi audio"] });
+    });
+
+    it("Avengers.Endgame.2019.4K.UHD.ITUNES.DL.H265.Dolby.ATMOS.MSUBS-Deflate.Telly", () => {
+        const releaseName = "Avengers.Endgame.2019.4K.UHD.ITUNES.DL.H265.Dolby.ATMOS.MSUBS-Deflate.Telly";
+
+        expect(parse(releaseName)).to.deep.include({ languages: ["multi subs"] });
+    });
+
+    it("Dawn of the Planet of the Apes (2014) 720p BluRay x264 - MULTI S", () => {
+        const releaseName = "Dawn of the Planet of the Apes (2014) 720p BluRay x264 - MULTI S";
+
+        expect(parse(releaseName)).to.deep.include({ languages: ["multi subs"] });
+    });
+
+    it("Pirates of the Caribbean On Stranger Tides (2011) DVD5 (Multi Su", () => {
+        const releaseName = "Pirates of the Caribbean On Stranger Tides (2011) DVD5 (Multi Su";
+
+        expect(parse(releaseName)).to.deep.include({ languages: ["multi subs"] });
+    });
+
+    it("Jumanji The Next Level (2019) 720p HDCAM Ads Blurred x264 Dual A", () => {
+        const releaseName = "Jumanji The Next Level (2019) 720p HDCAM Ads Blurred x264 Dual A";
+
+        expect(parse(releaseName)).to.deep.include({ languages: ["dual audio"] });
+    });
+
+    it("Men in Black International (2019) 720p Korsub HDRip x264 ESub [Dual Line Audio] [Hindi English]", () => {
+        const releaseName = "Men in Black International (2019) 720p Korsub HDRip x264 ESub [Dual Line Audio] [Hindi English]";
+
+        expect(parse(releaseName)).to.deep.include({ languages: ["dual audio", "english", "korean", "hindi"] });
+    });
+
+    it("Fame (1980) [DVDRip][Dual][Ac3][Eng-Spa]", () => {
+        const releaseName = "Fame (1980) [DVDRip][Dual][Ac3][Eng-Spa]";
+
+        expect(parse(releaseName)).to.deep.include({ languages: ["dual audio", "english", "spanish"] });
+    });
+
+    it("O Rei do Show 2018 Dual Áudio 4K UtraHD By.Luan.Harper", () => {
+        const releaseName = "O Rei do Show 2018 Dual Áudio 4K UtraHD By.Luan.Harper.";
+
+        expect(parse(releaseName)).to.deep.include({ languages: ["dual audio"] });
     });
 
     it("My Big Fat Greek Wedding (2002) 720p BrRip x264 - YIFY", () => {
@@ -634,6 +682,12 @@ describe("Parsing language", () => {
 
     it("Get Him to the Greek 2010 720p BluRay", () => {
         const releaseName = "Get Him to the Greek 2010 720p BluRay";
+
+        expect(parse(releaseName)).to.not.have.property("languages");
+    });
+
+    it("[Hakata Ramen] Hoshiai No Sora (Stars Align) 01 [1080p][HEVC][x265][10bit][Dual-Subs] HR-DR", () => {
+        const releaseName = "[Hakata Ramen] Hoshiai No Sora (Stars Align) 01 [1080p][HEVC][x265][10bit][Dual-Subs] HR-DR";
 
         expect(parse(releaseName)).to.not.have.property("languages");
     });

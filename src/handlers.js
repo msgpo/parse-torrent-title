@@ -198,7 +198,10 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("complete", /duology|trilogy|quadr[oi]logy|tetralogy|pentalogy|hexalogy|heptalogy|anthology|saga/i, boolean, { skipIfAlreadyFound: false });
 
     // Language
-    parser.addHandler("languages", /\bMulti(?:ple)?[ .-]*(?:Lang(?:uages?)?|sub(?:s|titles?)?|Audio|VF2)?\b/i, uniqConcat(value("multi")));
+    parser.addHandler("languages", /\bmulti(?:ple)?[ .-]*(?:su?$|sub\w*)\b|msub/i, uniqConcat(value("multi subs")), { skipIfAlreadyFound: false, remove: true });
+    parser.addHandler("languages", /\bmulti(?:ple)?[ .-]*(?:lang(?:uages?)?|audio|VF2)?\b/i, uniqConcat(value("multi audio")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bdual[ .-]*(?:au?$|[aá]udio|line)\b/i, uniqConcat(value("dual audio")));
+    parser.addHandler("languages", /\bdual\b(?![ .-]*sub)/i, uniqConcat(value("dual audio")));
     parser.addHandler("languages", /\bengl?(?:sub[a-zA-Z]*)?\b/i, uniqConcat(value("english")), { skipIfAlreadyFound: false });
     parser.addHandler("languages", /\beng?(?:sub[a-zA-Z]*)\b/i, uniqConcat(value("english")), { skipIfAlreadyFound: false });
     parser.addHandler("languages", /\bing(?:l[eéê]s)?\b/i, uniqConcat(value("english")), { skipIfAlreadyFound: false });
@@ -214,7 +217,7 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("languages", /\bFR(?:ench|a|e)?\b/i, uniqConcat(value("french")), { skipIfAlreadyFound: false });
     parser.addHandler("languages", /\bTruefrench|VF(?:[FI])\b/i, uniqConcat(value("french")), { skipIfAlreadyFound: false });
     parser.addHandler("languages", /\bVOST(?:(?:F(?:R)?)|A)?|SUBFRENCH\b/i, uniqConcat(value("french")), { skipIfAlreadyFound: false });
-    parser.addHandler("languages", /\b(?:ESP|spa|(en[ .]+)?espa[nñ]ola?|lat(?:ino)?)\b/i, uniqConcat(value("spanish")), { skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\b(?:ESP|spa|(en[ .]+)?espa[nñ]ola?|castellano|lat(?:ino)?)\b/i, uniqConcat(value("spanish")), { skipIfAlreadyFound: false });
     parser.addHandler("languages", /\bes(?=[ .,/-]+(?:[a-zA-Z]{2}[ .,/-]+){2,})\b/i, uniqConcat(value("spanish")), { skipFromTitle: true, skipIfAlreadyFound: false });
     parser.addHandler("languages", /\b(?<=[ .,/-]+(?:[a-zA-Z]{2}[ .,/-]+){2,})es\b/i, uniqConcat(value("spanish")), { skipFromTitle: true, skipIfAlreadyFound: false });
     parser.addHandler("languages", /\b(?<=[ .,/-]+(?:[a-zA-Z]{2}[ .,/-]+))es(?=[ .,/-]+(?:[a-zA-Z]{2}[ .,/-]+))\b/i, uniqConcat(value("spanish")), { skipFromTitle: true, skipIfAlreadyFound: false });
@@ -277,5 +280,11 @@ exports.addDefaults = /** @type Parser */ parser => {
     });
 
     // Dubbed
-    parser.addHandler("dubbed", /\b(?:DUBBED|dublado|dubbing|DUBS?|(?:DUAL|MULTI)[- ]+AUDIO)\b/i, boolean);
+    parser.addHandler("dubbed", /\b(?:DUBBED|dublado|dubbing|DUBS?)\b/i, boolean);
+    parser.addHandler("dubbed", ({ result }) => {
+        if (result.languages && ["multi audio", "dual audio"].some(l => result.languages.includes(l))) {
+            result.dubbed = true;
+        }
+        return { matchIndex: 0 };
+    });
 };

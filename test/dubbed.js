@@ -55,4 +55,16 @@ describe("Parsing dubbed", () => {
 
         expect(parse(releaseName)).to.deep.include({ dubbed: true });
     });
+
+    it("should detect dual correctly", () => {
+        const releaseName = "Fame (1980) [DVDRip][Dual][Ac3][Eng-Spa]";
+
+        expect(parse(releaseName)).to.deep.include({ dubbed: true });
+    });
+
+    it("should not detect dual subs", () => {
+        const releaseName = "[Hakata Ramen] Hoshiai No Sora (Stars Align) 01 [1080p][HEVC][x265][10bit][Dual-Subs] HR-DR";
+
+        expect(parse(releaseName)).to.not.have.property("dubbed");
+    });
 });
