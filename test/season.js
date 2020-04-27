@@ -286,4 +286,9 @@ describe("Parsing season", () => {
         const releaseName = "3Âº Temporada Bob esponja Pt-Br";
         expect(parse(releaseName)).to.deep.include({ seasons: [3] });
     });
+
+    it("should detect sn naming scheme", () => {
+        const releaseName = "Sons of Anarchy Sn4 Ep14 HD-TV - To Be, Act 2, By Cool Release";
+        expect(parse(releaseName)).to.deep.include({ seasons: [4] });
+    });
 });

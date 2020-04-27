@@ -128,6 +128,7 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("seasons", /(?:(?:\bthe\W)?\bcomplete)?(?:\W|^)s(\d{1,2})(?:[\Wex]|$)/i, array(integer), { skipIfAlreadyFound: false });
     parser.addHandler("seasons", /(?:(?:\bthe\W)?\bcomplete\W)?(?:\W|^)(\d{1,2})[. ]?(?:st|nd|rd|th)[. ]*season/i, array(integer));
     parser.addHandler("seasons", /(?:\D|^)(\d{1,2})x\d{1,3}(?:\D|$)/, array(integer));
+    parser.addHandler("seasons", /\bSn([1-9])(?:\D|$)/, array(integer));
     parser.addHandler("seasons", /[[(](\d{1,2})\.\d{1,2}[)\]]/, array(integer));
     parser.addHandler("seasons", /-\s?(\d{1,2})\.\d{1,2}\s?-/, array(integer));
 
