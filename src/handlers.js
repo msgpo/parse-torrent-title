@@ -78,7 +78,7 @@ exports.addDefaults = /** @type Parser */ parser => {
 
     // Codec
     parser.addHandler("codec", /[xh][-. ]?26[45]/i, lowercase, { remove: true });
-    parser.addHandler("codec", /dvix|mpeg2|divx|xvid|avc|hevc/i, lowercase, { remove: true });
+    parser.addHandler("codec", /dvix|mpeg2|divx|xvid|avc|hevc/i, lowercase, { remove: true, skipIfAlreadyFound: false });
     parser.addHandler("codec", ({ result }) => {
         if (result.codec) {
             result.codec = result.codec.replace(/[ .-]/, "");
