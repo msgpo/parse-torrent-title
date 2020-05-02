@@ -524,6 +524,18 @@ describe("Parsing language", () => {
         expect(parse(releaseName)).to.deep.include({ languages: ["english"] });
     });
 
+    it("The Next Karate Kid (1994) NTSC WS -Eng/Fre/Spa/Por- [ctang]", () => {
+        const releaseName = "The Next Karate Kid (1994) NTSC WS -Eng/Fre/Spa/Por- [ctang]";
+
+        expect(parse(releaseName)).to.deep.include({ languages: ["english", "french", "spanish", "portuguese"] });
+    });
+
+    xit("arsenico por compasion 1944 Capra spanish castellano", () => {
+        const releaseName = "arsenico por compasion 1944 Capra spanish castellano"; // @TODO should not detect
+
+        expect(parse(releaseName)).to.deep.include({ languages: ["spanish"] });
+    });
+
     it("Un.Homme.Et.Une.Femme.1966.DVDRip.XviD.AR [PT ENG ESP]", () => {
         const releaseName = "Un.Homme.Et.Une.Femme.1966.DVDRip.XviD.AR [PT ENG ESP]";
 
