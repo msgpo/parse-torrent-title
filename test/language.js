@@ -602,6 +602,12 @@ describe("Parsing language", () => {
         expect(parse(releaseName)).to.deep.include({ languages: ["hebrew"] });
     });
 
+    it("Into.the.Night.S01E04.Ayaz.1080p.NF.WEB-DL.DDP5.1.x264-NTG_track17_[heb].srt", () => {
+        const releaseName = "Into.the.Night.S01E04.Ayaz.1080p.NF.WEB-DL.DDP5.1.x264-NTG_track17_[heb].srt";
+
+        expect(parse(releaseName)).to.deep.include({ languages: ["hebrew"] });
+    });
+
     it("The.Protector.2018.S03.TURKISH.WEBRip.x264-ION10", () => {
         const releaseName = "The.Protector.2018.S03.TURKISH.WEBRip.x264-ION10";
 

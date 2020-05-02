@@ -267,7 +267,7 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("languages", /\bnorwegian\b/i, uniqConcat(value("norwegian")), { skipFromTitle: true, skipIfAlreadyFound: false });
     parser.addHandler("languages", /\b(?:arabic|arab.*(?:audio|lang(?:uage)?|sub(?:s|titles?)?))\b/i, uniqConcat(value("arabic")), { skipFromTitle: true, skipIfAlreadyFound: false });
     parser.addHandler("languages", /\b(?:turkish|tur)\b/i, uniqConcat(value("turkish")), { skipFromTitle: true, skipIfAlreadyFound: false });
-    parser.addHandler("languages", /\b(?:hebrew)\b/i, uniqConcat(value("hebrew")), { skipFromTitle: true, skipIfAlreadyFound: false });
+    parser.addHandler("languages", /\bheb(?:rew)?\b/i, uniqConcat(value("hebrew")), { skipFromTitle: true, skipIfAlreadyFound: false });
 
     // infer pt language based on season/episode naming
     parser.addHandler("languages", ({ title, result, matched }) => {
