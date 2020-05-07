@@ -303,6 +303,11 @@ describe("Parsing episode", () => {
         expect(parse(releaseName)).to.deep.include({ episode: 2 });
     });
 
+    it("should detect episode with a episode code including multiple numbers", () => {
+        const releaseName = "[ACX]El_Cazador_de_la_Bruja_-_19_-_A_Man_Who_Protects_[SSJ_Saiyan_Elite]_[9E199846].mkv";
+        expect(parse(releaseName)).to.deep.include({ episode: 19 });
+    });
+
     it("should detect multiple episodes with x episode marker and hyphen separator", () => {
         const releaseName = "BoJack Horseman [06x01-08 of 16] (2019-2020) WEB-DLRip 720p";
         expect(parse(releaseName)).to.deep.include({ episodes: [1, 2, 3, 4, 5, 6, 7, 8] });
