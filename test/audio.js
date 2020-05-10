@@ -55,4 +55,22 @@ describe("Parsing audio", () => {
 
         expect(parse(releaseName)).to.deep.include({ audio: "md" });
     });
+
+    it("should detect the eac3 5.1 audio correctly", () => {
+        const releaseName = "The Blacklist S07E04 (1080p AMZN WEB-DL x265 HEVC 10bit EAC-3 5.1)[Bandi]";
+
+        expect(parse(releaseName)).to.deep.include({ audio: "eac3" });
+    });
+
+    it("should detect the eac3 6.0 audio correctly", () => {
+        const releaseName = "Condor.S01E03.1080p.WEB-DL.x265.10bit.EAC3.6.0-Qman[UTR].mkv";
+
+        expect(parse(releaseName)).to.deep.include({ audio: "eac3" });
+    });
+
+    it("should detect the eac3 2.0 audio correctly 2", () => {
+        const releaseName = "The 13 Ghosts of Scooby-Doo (1985) S01 (1080p AMZN Webrip x265 10bit EAC-3 2.0 - Frys) [TAoE]";
+
+        expect(parse(releaseName)).to.deep.include({ audio: "eac3" });
+    });
 });

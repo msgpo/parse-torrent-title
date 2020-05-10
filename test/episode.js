@@ -372,4 +372,9 @@ describe("Parsing episode", () => {
         const releaseName = "Tokyo Ghoul Root A - 07 [S2-07] [Eng Sub] 480p [email protected]";
         expect(parse(releaseName)).to.deep.include({ episodes: [7] });
     });
+
+    it("black-ish.S05E02.1080p..x265.10bit.EAC3.6.0-Qman[UTR].mkv", () => {
+        const releaseName = "black-ish.S05E02.1080p..x265.10bit.EAC3.6.0-Qman[UTR].mkv";
+        expect(parse(releaseName)).to.deep.include({ episodes: [2] });
+    });
 });
