@@ -86,8 +86,7 @@ exports.addDefaults = /** @type Parser */ parser => {
     });
 
     // Audio
-    parser.addHandler("audio", /\bMP3|mp3|FLAC|Atmos|DTS(?:-HD)?|TrueHD\b/, lowercase);
-    parser.addHandler("audio", /Dual[- ]Audio/i, lowercase);
+    parser.addHandler("audio", /\b(?:mp3|FLAC|Atmos|DTS(?:-HD)?|TrueHD)\b/i, lowercase);
     parser.addHandler("audio", /EAC-?3(?:[. -]?[256]\.[01])?/i, value("eac3"), { remove: true });
     parser.addHandler("audio", /AC-?3(?:[.-]5\.1)?/i, value("ac3"), { remove: true });
     parser.addHandler("audio", /\b5\.1ch\b/i, value("ac3"), { remove: true });

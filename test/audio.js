@@ -73,4 +73,10 @@ describe("Parsing audio", () => {
 
         expect(parse(releaseName)).to.deep.include({ audio: "eac3" });
     });
+
+    it("should not detect mp3 audio inside a word", () => {
+        const releaseName = "[Thund3r3mp3ror] Attack on Titan - 23.mp4";
+
+        expect(parse(releaseName)).to.not.have.property("audio");
+    });
 });
