@@ -85,4 +85,10 @@ describe("Parsing date", () => {
 
         expect(parse(releaseName)).to.deep.include({ date: "2019-12-03" });
     });
+
+    it("EastEnders_20200116_19302000.mp4", () => {
+        const releaseName = "EastEnders_20200116_19302000.mp4";
+
+        expect(parse(releaseName)).to.deep.include({ date: "2020-01-16" });
+    });
 });
