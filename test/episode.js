@@ -353,6 +353,11 @@ describe("Parsing episode", () => {
         expect(parse(releaseName)).to.deep.include({ episodes: [11] });
     });
 
+    it("should not detect episode in episode checksum code with paranthesis", () => {
+        const releaseName = "(Hi10)_Re_Zero_Shin_Henshuu-ban_-_02v2_(720p)_(DDY)_(72006E34).mkv";
+        expect(parse(releaseName)).to.deep.include({ episodes: [2] });
+    });
+
     it("should not detect episode before season", () => {
         const releaseName = "22-7 (Season 1) (1080p)(HEVC x265 10bit)(Eng-Subs)-Judas[TGx] ⭐";
         expect(parse(releaseName)).to.not.have.property("episodes");
