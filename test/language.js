@@ -709,4 +709,10 @@ describe("Parsing language", () => {
 
         expect(parse(releaseName)).to.not.have.property("languages");
     });
+
+    it("should not remove english from title", () => {
+        const releaseName = "The English Patient (1996) 720p BrRip x264 - YIFY";
+
+        expect(parse(releaseName)).to.deep.include({ title: "The English Patient", languages: ["english"] });
+    });
 });

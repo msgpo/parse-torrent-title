@@ -48,7 +48,8 @@ function createHandlerFromRegExp(name, regExp, transformer, options) {
                 return {
                     rawMatch,
                     matchIndex: match.index,
-                    remove: options.remove
+                    remove: options.remove,
+                    skipFromTitle: options.skipFromTitle
                 };
             }
         }
@@ -129,7 +130,7 @@ class Parser {
             if (matchResult && matchResult.remove) {
                 title = title.replace(matchResult.rawMatch, "");
             }
-            if (!handler.skipFromTitle && matchResult && matchResult.matchIndex && matchResult.matchIndex < endOfTitle) {
+            if (matchResult && !matchResult.skipFromTitle && matchResult.matchIndex && matchResult.matchIndex < endOfTitle) {
                 endOfTitle = matchResult.matchIndex;
             }
         }

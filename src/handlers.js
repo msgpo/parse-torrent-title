@@ -196,7 +196,8 @@ exports.addDefaults = /** @type Parser */ parser => {
     parser.addHandler("complete", /(?:\bthe\W)?(?:\bcomplete|full|all)\b.*\b(?:series|seasons|collection|episodes|set|pack|movies)\b/i, boolean);
     parser.addHandler("complete", /\b(?:series|seasons|movies?)\b.*\b(?:complete|collection)\b/i, boolean);
     parser.addHandler("complete", /(?:\bthe\W)?\bultimate\b[ .]\bcollection\b/i, boolean, { skipIfAlreadyFound: false });
-    parser.addHandler("complete", /\bcollection\b.*\b(?:set|pack|movies)?\b/i, boolean);
+    parser.addHandler("complete", /\bcollection\b.*\b(?:set|pack|movies)\b/i, boolean);
+    parser.addHandler("complete", /\bcollection\b/i, boolean, { skipFromTitle: true });
     parser.addHandler("complete", /duology|trilogy|quadr[oi]logy|tetralogy|pentalogy|hexalogy|heptalogy|anthology|saga/i, boolean, { skipIfAlreadyFound: false });
 
     // Language
